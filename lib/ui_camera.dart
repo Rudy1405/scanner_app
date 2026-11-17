@@ -9,6 +9,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 
+import 'native/find_corners.dart';
+import 'native/scan_worker.dart';
+import 'native/scanner_ffi.dart';
 import 'processing.dart';
 import 'scan_flow.dart';
 import 'store.dart';
@@ -94,7 +97,7 @@ _Shot _captureJob((Uint8List, bool, List<double>?, int) a) {
   }
   var corners = all;
   if (a.$2) {
-    final found = detectCorners(im);
+    final found = findCorners(im);
     corners = !_isFallback(found) ? found : (a.$3 ?? found);
   }
   final flat = flattenPage(im, corners);
@@ -138,6 +141,9 @@ class _CameraScanScreenState extends State<CameraScanScreen>
   List<double>? quad; // detected corners (0..1, portrait)
   List<double>? shownQuad;
   bool detecting = false;
+  ScanWorker? worker; // native OpenCV detector (null = Dart fallback)
+  int nativeCount = 0, nativeMicros = 0, skipped = 0;
+  DateTime statsAt = DateTime.now();
   DateTime lastDetect = DateTime(2000);
   DateTime? stableSince;
   bool shooting = false;
@@ -169,6 +175,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    _startWorker();
     _init();
   }
 
@@ -247,6 +254,41 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     }
   }
 
+  Future<void> _startWorker() async {
+    final w = await ScanWorker.start();
+    if (!mounted) {
+      w?.dispose();
+      return;
+    }
+    if (w == null) {
+      debugPrint('scan: native detector unavailable, using the Dart detector');
+      return;
+    }
+    w.onResult = _onNative;
+    w.onDead = () {
+      debugPrint('scan: worker stopped, using the Dart detector');
+      worker = null;
+    };
+    worker = w;
+  }
+
+  /// Answer of the native worker (UI isolate).
+  void _onNative(ScanResult r, int micros) {
+    detecting = false;
+    if (!mounted) return;
+    nativeCount++;
+    nativeMicros += micros;
+    final now = DateTime.now();
+    if (now.difference(statsAt).inMilliseconds >= 2000) {
+      debugPrint('scan: native ${(nativeMicros / nativeCount / 1000).toStringAsFixed(1)} ms/frame, '
+          '${(nativeCount * 1000 / now.difference(statsAt).inMilliseconds).toStringAsFixed(1)} Hz, '
+          'skipped $skipped');
+      statsAt = now;
+      nativeCount = nativeMicros = skipped = 0;
+    }
+    _updateQuad(r.quad);
+  }
+
   void _onFrame(CameraImage image) {
     if (!gotFrame && mounted) {
       setState(() {
@@ -254,21 +296,34 @@ class _CameraScanScreenState extends State<CameraScanScreen>
         noFrames = false;
       });
     }
-    if (detecting || shooting) return;
+    if (shooting) return;
+    final w = worker;
+    // Native path: one worker; frames that arrive while it is busy are skipped.
+    if (w != null) {
+      if (w.busy) {
+        skipped++;
+        return;
+      }
+      final now = DateTime.now();
+      if (now.difference(lastDetect).inMilliseconds < 90) return;
+      lastDetect = now;
+      final plane = image.planes.first;
+      _sampleBrightness(plane.bytes);
+      final sensor = cam?.description.sensorOrientation ?? 90;
+      detecting = true;
+      if (!w.submit(plane.bytes, image.width, image.height, plane.bytesPerRow, sensor)) {
+        detecting = false;
+      }
+      return;
+    }
+    // Fallback: the Dart detector in a short-lived isolate.
+    if (detecting) return;
     final now = DateTime.now();
     if (now.difference(lastDetect).inMilliseconds < 300) return;
     lastDetect = now;
     detecting = true;
     final plane = image.planes.first;
-    // Mean brightness from a sparse sample of the Y plane (to tell "dark" from "broken").
-    var sum = 0, n = 0;
-    for (var i = 0; i < plane.bytes.length; i += 211) {
-      sum += plane.bytes[i];
-      n++;
-    }
-    final mean = n == 0 ? 255.0 : sum / n;
-    if ((mean < 28) != (brightness < 28) && mounted) setState(() {});
-    brightness = mean;
+    _sampleBrightness(plane.bytes);
     final frame = _Frame(Uint8List.fromList(plane.bytes), image.width, image.height,
         plane.bytesPerRow, cam?.description.sensorOrientation ?? 90);
     compute(_detectLive, frame).then((q) {
@@ -280,6 +335,18 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     });
   }
 
+  /// Mean brightness from a sparse sample of the Y plane (to tell "dark" from "broken").
+  void _sampleBrightness(Uint8List y) {
+    var sum = 0, n = 0;
+    for (var i = 0; i < y.length; i += 211) {
+      sum += y[i];
+      n++;
+    }
+    final mean = n == 0 ? 255.0 : sum / n;
+    if ((mean < 28) != (brightness < 28) && mounted) setState(() {});
+    brightness = mean;
+  }
+
   void _updateQuad(List<double>? q) {
     final now = DateTime.now();
     if (q == null) {
@@ -289,10 +356,14 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     } else {
       stableSince = now;
     }
-    setState(() {
-      quad = q;
-      if (q != null) shownQuad = q;
-    });
+    // Rebuild only when the outline really changed (sub-pixel jitter doesn't).
+    final changed = (quad == null) != (q == null) || (q != null && _moved(quad!, q) > 0.006);
+    if (changed) {
+      setState(() {
+        quad = q;
+        if (q != null) shownQuad = q;
+      });
+    }
     if (auto &&
         q != null &&
         !shooting &&
@@ -478,6 +549,8 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     WidgetsBinding.instance.removeObserver(this);
     justTimer?.cancel();
     frameTimer?.cancel();
+    worker?.dispose();
+    worker = null;
     shotFlash.dispose();
     fly.dispose();
     sweep.dispose();

@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:image/image.dart' as img;
 
+import 'native/find_corners.dart';
 import 'processing.dart';
 import 'store.dart';
 import 'theme.dart';
@@ -28,7 +29,7 @@ class CapturedPage {
 List<double> _detect(Uint8List photo) {
   final img = decodePhoto(photo);
   if (img == null) return const [0, 0, 1, 0, 1, 1, 0, 1];
-  return detectCorners(img);
+  return findCorners(img);
 }
 
 Future<List<double>> detectCornersAsync(Uint8List photo) => compute(_detect, photo);
@@ -47,7 +48,7 @@ Future<List<double>> detectCornersAsync(Uint8List photo) => compute(_detect, pho
         height: (im.height * s).round(),
         interpolation: img.Interpolation.average));
   }
-  final corners = a.$2 ? detectCorners(im) : all;
+  final corners = a.$2 ? findCorners(im) : all;
   return (corners, isBlurry(flattenPage(im, corners)));
 }
 

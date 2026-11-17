@@ -51,3 +51,8 @@ app.*.map.json
 __pycache__/
 shots/
 *.apk
+native/opencv-src/
+native/opencv-android/
+native/*.zip
+native/ocv-build-*/
+native/*.log
