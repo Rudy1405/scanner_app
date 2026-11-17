@@ -1,0 +1,1253 @@
+{
+ "id": 936,
+ "name": "16 · Procesando",
+ "type": "FRAME",
+ "x": 986.0,
+ "y": 3450.0,
+ "width": 393.0,
+ "height": 852.0,
+ "fills": [
+  {
+   "color": "#F4F6F8",
+   "type": "solid"
+  }
+ ],
+ "cornerRadius": 48.0,
+ "effects": [
+  {
+   "blend": "normal",
+   "color": {
+    "a": 0.12156862765550613,
+    "b": 0.20000000298023224,
+    "g": 0.16078431904315948,
+    "r": 0.12156862765550613
+   },
+   "offset": [
+    0.0,
+    24.0
+   ],
+   "radius": 60.0,
+   "showBehind": false,
+   "spread": 0.0,
+   "type": "dropShadow",
+   "visible": true
+  }
+ ],
+ "children": [
+  {
+   "id": 937,
+   "name": "StatusBar/Light",
+   "type": "INSTANCE",
+   "x": 0.0,
+   "y": 0.0,
+   "width": 393.0,
+   "height": 54.0,
+   "mainComponentName": "StatusBar/Light",
+   "children": [
+    {
+     "id": 938,
+     "name": "9:41",
+     "type": "TEXT",
+     "x": 50.0,
+     "y": 17.0,
+     "width": 56.0,
+     "height": 21.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "characters": "9:41",
+     "fontFamily": "Inter",
+     "fontSize": 17.0,
+     "fontStyle": "SemiBold",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "center"
+    },
+    {
+     "id": 939,
+     "name": "s1",
+     "type": "RECTANGLE",
+     "x": 292.0,
+     "y": 26.0,
+     "width": 3.0,
+     "height": 4.5,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    },
+    {
+     "id": 940,
+     "name": "s2",
+     "type": "RECTANGLE",
+     "x": 297.0,
+     "y": 23.5,
+     "width": 3.0,
+     "height": 7.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    },
+    {
+     "id": 941,
+     "name": "s3",
+     "type": "RECTANGLE",
+     "x": 302.0,
+     "y": 21.0,
+     "width": 3.0,
+     "height": 9.5,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    },
+    {
+     "id": 942,
+     "name": "s4",
+     "type": "RECTANGLE",
+     "x": 307.0,
+     "y": 18.5,
+     "width": 3.0,
+     "height": 12.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    },
+    {
+     "id": 943,
+     "name": "wifi",
+     "type": "VECTOR",
+     "x": 317.0,
+     "y": 19.65,
+     "width": 15.0,
+     "height": 8.95,
+     "strokes": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 2.0
+    },
+    {
+     "id": 944,
+     "name": "bat",
+     "type": "RECTANGLE",
+     "x": 339.0,
+     "y": 18.5,
+     "width": 25.0,
+     "height": 12.0,
+     "strokes": [
+      {
+       "color": "#1F2933",
+       "opacity": 0.4000000059604645,
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 1.0,
+     "cornerRadius": 3.5
+    },
+    {
+     "id": 945,
+     "name": "batfill",
+     "type": "RECTANGLE",
+     "x": 341.0,
+     "y": 20.5,
+     "width": 21.0,
+     "height": 8.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 2.0
+    },
+    {
+     "id": 946,
+     "name": "nub",
+     "type": "RECTANGLE",
+     "x": 365.0,
+     "y": 22.5,
+     "width": 1.5,
+     "height": 4.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "opacity": 0.4000000059604645,
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    }
+   ]
+  },
+  {
+   "id": 947,
+   "name": "atrás",
+   "type": "FRAME",
+   "x": 10.0,
+   "y": 60.0,
+   "width": 123.0,
+   "height": 37.0,
+   "children": [
+    {
+     "id": 948,
+     "name": "Vector",
+     "type": "VECTOR",
+     "x": 4.0,
+     "y": 11.5,
+     "width": 7.0,
+     "height": 14.0,
+     "strokes": [
+      {
+       "color": "#0089A7",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 2.4
+    },
+    {
+     "id": 949,
+     "name": "Documentos",
+     "type": "TEXT",
+     "x": 13.0,
+     "y": 8.0,
+     "width": 102.0,
+     "height": 21.0,
+     "fills": [
+      {
+       "color": "#0089A7",
+       "type": "solid"
+      }
+     ],
+     "characters": "Documentos",
+     "fontFamily": "Inter",
+     "fontSize": 17.0,
+     "fontStyle": "Regular",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "left"
+    }
+   ]
+  },
+  {
+   "id": 950,
+   "name": "ordenar",
+   "type": "FRAME",
+   "x": 281.0,
+   "y": 57.0,
+   "width": 40.0,
+   "height": 40.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "opacity": 0.800000011920929,
+     "type": "solid"
+    }
+   ],
+   "strokes": [
+    {
+     "color": "#FFFFFF",
+     "type": "solid"
+    }
+   ],
+   "strokeWeight": 1.0,
+   "cornerRadius": 20.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.0784313753247261,
+      "b": 0.20000000298023224,
+      "g": 0.16078431904315948,
+      "r": 0.12156862765550613
+     },
+     "offset": [
+      0.0,
+      4.0
+     ],
+     "radius": 12.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 951,
+     "name": "Vector",
+     "type": "VECTOR",
+     "x": 12.5,
+     "y": 13.0,
+     "width": 15.0,
+     "height": 14.0,
+     "strokes": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 1.8
+    }
+   ]
+  },
+  {
+   "id": 952,
+   "name": "más",
+   "type": "FRAME",
+   "x": 329.0,
+   "y": 57.0,
+   "width": 40.0,
+   "height": 40.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "opacity": 0.800000011920929,
+     "type": "solid"
+    }
+   ],
+   "strokes": [
+    {
+     "color": "#FFFFFF",
+     "type": "solid"
+    }
+   ],
+   "strokeWeight": 1.0,
+   "cornerRadius": 20.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.0784313753247261,
+      "b": 0.20000000298023224,
+      "g": 0.16078431904315948,
+      "r": 0.12156862765550613
+     },
+     "offset": [
+      0.0,
+      4.0
+     ],
+     "radius": 12.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 953,
+     "name": "Ellipse",
+     "type": "ELLIPSE",
+     "x": 11.0,
+     "y": 18.0,
+     "width": 4.0,
+     "height": 4.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ]
+    },
+    {
+     "id": 954,
+     "name": "Ellipse",
+     "type": "ELLIPSE",
+     "x": 18.0,
+     "y": 18.0,
+     "width": 4.0,
+     "height": 4.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ]
+    },
+    {
+     "id": 955,
+     "name": "Ellipse",
+     "type": "ELLIPSE",
+     "x": 25.0,
+     "y": 18.0,
+     "width": 4.0,
+     "height": 4.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 956,
+   "name": "título",
+   "type": "FRAME",
+   "x": 20.0,
+   "y": 106.0,
+   "width": 289.5,
+   "height": 34.0,
+   "children": [
+    {
+     "id": 957,
+     "name": "Factura luz · octubre",
+     "type": "TEXT",
+     "x": 0.0,
+     "y": 0.0,
+     "width": 269.0,
+     "height": 34.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "characters": "Factura luz · octubre",
+     "fontFamily": "Inter",
+     "fontSize": 28.0,
+     "fontStyle": "Bold",
+     "letterSpacing": "-0.6",
+     "lineHeight": "Auto",
+     "textAlign": "left"
+    },
+    {
+     "id": 958,
+     "name": "Vector",
+     "type": "VECTOR",
+     "x": 277.0,
+     "y": 10.75,
+     "width": 12.5,
+     "height": 12.5,
+     "strokes": [
+      {
+       "color": "#9AA5B1",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 1.7
+    }
+   ]
+  },
+  {
+   "id": 959,
+   "name": "2 páginas · 14/11/2026 10:30",
+   "type": "TEXT",
+   "x": 20.0,
+   "y": 144.0,
+   "width": 188.0,
+   "height": 17.0,
+   "fills": [
+    {
+     "color": "#7B8794",
+     "type": "solid"
+    }
+   ],
+   "characters": "2 páginas · 14/11/2026 10:30",
+   "fontFamily": "Inter",
+   "fontSize": 14.0,
+   "fontStyle": "Regular",
+   "letterSpacing": "0%",
+   "lineHeight": "Auto",
+   "textAlign": "left"
+  },
+  {
+   "id": 960,
+   "name": "página 1",
+   "type": "FRAME",
+   "x": 20.0,
+   "y": 184.0,
+   "width": 168.0,
+   "height": 238.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 6.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.12156862765550613,
+      "b": 0.20000000298023224,
+      "g": 0.16078431904315948,
+      "r": 0.12156862765550613
+     },
+     "offset": [
+      0.0,
+      6.0
+     ],
+     "radius": 18.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 961,
+     "name": "Image",
+     "type": "RECTANGLE",
+     "x": 0.0,
+     "y": 0.0,
+     "width": 168.0,
+     "height": 238.0,
+     "fills": [
+      {
+       "blend": "normal",
+       "crop": null,
+       "filters": {
+        "contrast": 0.0,
+        "exposure": 0.0,
+        "highlights": 0.0,
+        "saturation": 0.0,
+        "shadows": 0.0,
+        "temperature": 0.0,
+        "tint": 0.0
+       },
+       "image": "084df35e00939c000b178c95dea3073617baaba2c8a9dd5966c5984f9f7add80",
+       "opacity": 1.0,
+       "rotation": 0,
+       "scale": 1.0,
+       "scale_mode": "fill",
+       "type": "image",
+       "visible": true
+      }
+     ]
+    },
+    {
+     "id": 962,
+     "name": "número",
+     "type": "FRAME",
+     "x": 0.0,
+     "y": 210.0,
+     "width": 168.0,
+     "height": 28.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "opacity": 0.4000000059604645,
+       "type": "solid"
+      }
+     ],
+     "effects": [
+      {
+       "blurType": "uniform",
+       "end": [
+        0.5,
+        1.0
+       ],
+       "radius": 10.0,
+       "start": [
+        0.5,
+        0.0
+       ],
+       "startRadius": 0.0,
+       "type": "backgroundBlur",
+       "visible": true
+      }
+     ],
+     "children": [
+      {
+       "id": 963,
+       "name": "1",
+       "type": "TEXT",
+       "x": 81.0,
+       "y": 6.0,
+       "width": 6.0,
+       "height": 16.0,
+       "fills": [
+        {
+         "color": "#FFFFFF",
+         "type": "solid"
+        }
+       ],
+       "characters": "1",
+       "fontFamily": "Inter",
+       "fontSize": 13.0,
+       "fontStyle": "SemiBold",
+       "letterSpacing": "0%",
+       "lineHeight": "Auto",
+       "textAlign": "left"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 964,
+   "name": "página 2",
+   "type": "FRAME",
+   "x": 205.0,
+   "y": 184.0,
+   "width": 168.0,
+   "height": 238.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 6.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.12156862765550613,
+      "b": 0.20000000298023224,
+      "g": 0.16078431904315948,
+      "r": 0.12156862765550613
+     },
+     "offset": [
+      0.0,
+      6.0
+     ],
+     "radius": 18.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 965,
+     "name": "Image",
+     "type": "RECTANGLE",
+     "x": 0.0,
+     "y": 0.0,
+     "width": 168.0,
+     "height": 238.0,
+     "fills": [
+      {
+       "blend": "normal",
+       "crop": null,
+       "filters": {
+        "contrast": 0.0,
+        "exposure": 0.0,
+        "highlights": 0.0,
+        "saturation": 0.0,
+        "shadows": 0.0,
+        "temperature": 0.0,
+        "tint": 0.0
+       },
+       "image": "b112aa3d12ed8fb4214c697841d305fdea565c692f5ab45d386c56ea49b38dc3",
+       "opacity": 1.0,
+       "rotation": 0,
+       "scale": 1.0,
+       "scale_mode": "fill",
+       "type": "image",
+       "visible": true
+      }
+     ]
+    },
+    {
+     "id": 966,
+     "name": "número",
+     "type": "FRAME",
+     "x": 0.0,
+     "y": 210.0,
+     "width": 168.0,
+     "height": 28.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "opacity": 0.4000000059604645,
+       "type": "solid"
+      }
+     ],
+     "effects": [
+      {
+       "blurType": "uniform",
+       "end": [
+        0.5,
+        1.0
+       ],
+       "radius": 10.0,
+       "start": [
+        0.5,
+        0.0
+       ],
+       "startRadius": 0.0,
+       "type": "backgroundBlur",
+       "visible": true
+      }
+     ],
+     "children": [
+      {
+       "id": 967,
+       "name": "2",
+       "type": "TEXT",
+       "x": 79.5,
+       "y": 6.0,
+       "width": 9.0,
+       "height": 16.0,
+       "fills": [
+        {
+         "color": "#FFFFFF",
+         "type": "solid"
+        }
+       ],
+       "characters": "2",
+       "fontFamily": "Inter",
+       "fontSize": 13.0,
+       "fontStyle": "SemiBold",
+       "letterSpacing": "0%",
+       "lineHeight": "Auto",
+       "textAlign": "left"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 968,
+   "name": "añadir página",
+   "type": "FRAME",
+   "x": 20.0,
+   "y": 440.0,
+   "width": 168.0,
+   "height": 238.0,
+   "fills": [
+    {
+     "color": "#00B4D8",
+     "opacity": 0.05098039284348488,
+     "type": "solid"
+    }
+   ],
+   "strokes": [
+    {
+     "color": "#00B4D8",
+     "opacity": 0.501960813999176,
+     "type": "solid"
+    }
+   ],
+   "strokeWeight": 1.5,
+   "cornerRadius": 12.0,
+   "children": [
+    {
+     "id": 969,
+     "name": "Frame 6",
+     "type": "FRAME",
+     "x": 62.0,
+     "y": 83.5,
+     "width": 44.0,
+     "height": 44.0,
+     "fills": [
+      {
+       "color": "#E0F5FA",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 22.0,
+     "children": [
+      {
+       "id": 970,
+       "name": "Vector",
+       "type": "VECTOR",
+       "x": 15.0,
+       "y": 15.0,
+       "width": 14.0,
+       "height": 14.0,
+       "strokes": [
+        {
+         "color": "#0089A7",
+         "type": "solid"
+        }
+       ],
+       "strokeWeight": 2.2
+      }
+     ]
+    },
+    {
+     "id": 971,
+     "name": "Añadir páginas",
+     "type": "TEXT",
+     "x": 33.0,
+     "y": 137.5,
+     "width": 102.0,
+     "height": 17.0,
+     "fills": [
+      {
+       "color": "#0089A7",
+       "type": "solid"
+      }
+     ],
+     "characters": "Añadir páginas",
+     "fontFamily": "Inter",
+     "fontSize": 14.0,
+     "fontStyle": "SemiBold",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "left"
+    }
+   ]
+  },
+  {
+   "id": 972,
+   "name": "barra de acciones",
+   "type": "FRAME",
+   "x": 16.0,
+   "y": 744.0,
+   "width": 361.0,
+   "height": 66.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "opacity": 0.8509804010391235,
+     "type": "solid"
+    }
+   ],
+   "strokes": [
+    {
+     "color": "#FFFFFF",
+     "type": "solid"
+    }
+   ],
+   "strokeWeight": 1.0,
+   "cornerRadius": 33.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.12156862765550613,
+      "b": 0.20000000298023224,
+      "g": 0.16078431904315948,
+      "r": 0.12156862765550613
+     },
+     "offset": [
+      0.0,
+      8.0
+     ],
+     "radius": 24.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    },
+    {
+     "blurType": "uniform",
+     "end": [
+      0.5,
+      1.0
+     ],
+     "radius": 20.0,
+     "start": [
+      0.5,
+      0.0
+     ],
+     "startRadius": 0.0,
+     "type": "backgroundBlur",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 973,
+     "name": "Añadir",
+     "type": "FRAME",
+     "x": 9.0,
+     "y": 1.0,
+     "width": 85.75,
+     "height": 64.0,
+     "children": [
+      {
+       "id": 974,
+       "name": "Vector",
+       "type": "VECTOR",
+       "x": 33.88,
+       "y": 16.5,
+       "width": 18.0,
+       "height": 15.0,
+       "strokes": [
+        {
+         "color": "#00B4D8",
+         "type": "solid"
+        }
+       ],
+       "strokeWeight": 1.8
+      },
+      {
+       "id": 975,
+       "name": "Añadir",
+       "type": "TEXT",
+       "x": 24.88,
+       "y": 34.5,
+       "width": 36.0,
+       "height": 13.0,
+       "fills": [
+        {
+         "color": "#1F2933",
+         "type": "solid"
+        }
+       ],
+       "characters": "Añadir",
+       "fontFamily": "Inter",
+       "fontSize": 11.0,
+       "fontStyle": "SemiBold",
+       "letterSpacing": "0%",
+       "lineHeight": "Auto",
+       "textAlign": "left"
+      }
+     ]
+    },
+    {
+     "id": 976,
+     "name": "PDF",
+     "type": "FRAME",
+     "x": 94.75,
+     "y": 1.0,
+     "width": 85.75,
+     "height": 64.0,
+     "children": [
+      {
+       "id": 977,
+       "name": "Vector",
+       "type": "VECTOR",
+       "x": 36.38,
+       "y": 15.5,
+       "width": 13.0,
+       "height": 17.0,
+       "strokes": [
+        {
+         "color": "#00B4D8",
+         "type": "solid"
+        }
+       ],
+       "strokeWeight": 1.8
+      },
+      {
+       "id": 978,
+       "name": "PDF",
+       "type": "TEXT",
+       "x": 31.88,
+       "y": 35.5,
+       "width": 22.0,
+       "height": 13.0,
+       "fills": [
+        {
+         "color": "#1F2933",
+         "type": "solid"
+        }
+       ],
+       "characters": "PDF",
+       "fontFamily": "Inter",
+       "fontSize": 11.0,
+       "fontStyle": "SemiBold",
+       "letterSpacing": "0%",
+       "lineHeight": "Auto",
+       "textAlign": "left"
+      }
+     ]
+    },
+    {
+     "id": 979,
+     "name": "Texto",
+     "type": "FRAME",
+     "x": 180.5,
+     "y": 1.0,
+     "width": 85.75,
+     "height": 64.0,
+     "children": [
+      {
+       "id": 980,
+       "name": "Vector",
+       "type": "VECTOR",
+       "x": 34.88,
+       "y": 16.0,
+       "width": 16.0,
+       "height": 16.0,
+       "strokes": [
+        {
+         "color": "#00B4D8",
+         "type": "solid"
+        }
+       ],
+       "strokeWeight": 1.8
+      },
+      {
+       "id": 981,
+       "name": "Texto",
+       "type": "TEXT",
+       "x": 27.88,
+       "y": 35.0,
+       "width": 30.0,
+       "height": 13.0,
+       "fills": [
+        {
+         "color": "#1F2933",
+         "type": "solid"
+        }
+       ],
+       "characters": "Texto",
+       "fontFamily": "Inter",
+       "fontSize": 11.0,
+       "fontStyle": "SemiBold",
+       "letterSpacing": "0%",
+       "lineHeight": "Auto",
+       "textAlign": "left"
+      }
+     ]
+    },
+    {
+     "id": 982,
+     "name": "JPG",
+     "type": "FRAME",
+     "x": 266.25,
+     "y": 1.0,
+     "width": 85.75,
+     "height": 64.0,
+     "children": [
+      {
+       "id": 983,
+       "name": "Vector",
+       "type": "VECTOR",
+       "x": 34.38,
+       "y": 17.0,
+       "width": 17.0,
+       "height": 14.0,
+       "strokes": [
+        {
+         "color": "#00B4D8",
+         "type": "solid"
+        }
+       ],
+       "strokeWeight": 1.8
+      },
+      {
+       "id": 984,
+       "name": "JPG",
+       "type": "TEXT",
+       "x": 31.88,
+       "y": 34.0,
+       "width": 22.0,
+       "height": 13.0,
+       "fills": [
+        {
+         "color": "#1F2933",
+         "type": "solid"
+        }
+       ],
+       "characters": "JPG",
+       "fontFamily": "Inter",
+       "fontSize": 11.0,
+       "fontStyle": "SemiBold",
+       "letterSpacing": "0%",
+       "lineHeight": "Auto",
+       "textAlign": "left"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": 985,
+   "name": "HomeIndicator/Light",
+   "type": "INSTANCE",
+   "x": 0.0,
+   "y": 818.0,
+   "width": 393.0,
+   "height": 34.0,
+   "mainComponentName": "HomeIndicator/Light",
+   "children": [
+    {
+     "id": 986,
+     "name": "Rectangle",
+     "type": "RECTANGLE",
+     "x": 127.0,
+     "y": 21.0,
+     "width": 139.0,
+     "height": 5.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 3.0
+    }
+   ]
+  },
+  {
+   "id": 987,
+   "name": "dim",
+   "type": "RECTANGLE",
+   "x": 0.0,
+   "y": 0.0,
+   "width": 393.0,
+   "height": 852.0,
+   "fills": [
+    {
+     "color": "#0B0F14",
+     "opacity": 0.20000000298023224,
+     "type": "solid"
+    }
+   ]
+  },
+  {
+   "id": 988,
+   "name": "procesando",
+   "type": "FRAME",
+   "x": 101.5,
+   "y": 326.0,
+   "width": 190.0,
+   "height": 157.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "opacity": 0.9215686321258545,
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 28.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.18039216101169586,
+      "b": 0.0,
+      "g": 0.0,
+      "r": 0.0
+     },
+     "offset": [
+      0.0,
+      16.0
+     ],
+     "radius": 40.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    },
+    {
+     "blurType": "uniform",
+     "end": [
+      0.5,
+      1.0
+     ],
+     "radius": 30.0,
+     "start": [
+      0.5,
+      0.0
+     ],
+     "startRadius": 0.0,
+     "type": "backgroundBlur",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 989,
+     "name": "Frame 18",
+     "type": "FRAME",
+     "x": 69.0,
+     "y": 26.0,
+     "width": 52.0,
+     "height": 52.0,
+     "children": [
+      {
+       "id": 990,
+       "name": "Ellipse",
+       "type": "ELLIPSE",
+       "x": 0.0,
+       "y": 0.0,
+       "width": 52.0,
+       "height": 52.0,
+       "strokes": [
+        {
+         "color": "#E0F5FA",
+         "type": "solid"
+        }
+       ],
+       "strokeWeight": 5.0
+      },
+      {
+       "id": 991,
+       "name": "Vector",
+       "type": "VECTOR",
+       "x": 26.0,
+       "y": 2.5,
+       "width": 23.5,
+       "height": 43.8,
+       "strokes": [
+        {
+         "color": "#00B4D8",
+         "type": "solid"
+        }
+       ],
+       "strokeWeight": 5.0
+      }
+     ]
+    },
+    {
+     "id": 992,
+     "name": "Creando PDF…",
+     "type": "TEXT",
+     "x": 33.5,
+     "y": 88.0,
+     "width": 123.0,
+     "height": 21.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "characters": "Creando PDF…",
+     "fontFamily": "Inter",
+     "fontSize": 17.0,
+     "fontStyle": "SemiBold",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "left"
+    },
+    {
+     "id": 993,
+     "name": "2 páginas · A4",
+     "type": "TEXT",
+     "x": 50.5,
+     "y": 119.0,
+     "width": 89.0,
+     "height": 16.0,
+     "fills": [
+      {
+       "color": "#7B8794",
+       "type": "solid"
+      }
+     ],
+     "characters": "2 páginas · A4",
+     "fontFamily": "Inter",
+     "fontSize": 13.0,
+     "fontStyle": "Regular",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "left"
+    }
+   ]
+  }
+ ]
+}

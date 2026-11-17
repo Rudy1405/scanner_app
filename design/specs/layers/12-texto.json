@@ -1,0 +1,677 @@
+{
+ "id": 688,
+ "name": "12 · Texto del documento",
+ "type": "FRAME",
+ "x": 1479.0,
+ "y": 2300.0,
+ "width": 393.0,
+ "height": 852.0,
+ "fills": [
+  {
+   "color": "#F4F6F8",
+   "type": "solid"
+  }
+ ],
+ "cornerRadius": 48.0,
+ "effects": [
+  {
+   "blend": "normal",
+   "color": {
+    "a": 0.12156862765550613,
+    "b": 0.20000000298023224,
+    "g": 0.16078431904315948,
+    "r": 0.12156862765550613
+   },
+   "offset": [
+    0.0,
+    24.0
+   ],
+   "radius": 60.0,
+   "showBehind": false,
+   "spread": 0.0,
+   "type": "dropShadow",
+   "visible": true
+  }
+ ],
+ "children": [
+  {
+   "id": 689,
+   "name": "StatusBar/Light",
+   "type": "INSTANCE",
+   "x": 0.0,
+   "y": 0.0,
+   "width": 393.0,
+   "height": 54.0,
+   "mainComponentName": "StatusBar/Light",
+   "children": [
+    {
+     "id": 690,
+     "name": "9:41",
+     "type": "TEXT",
+     "x": 50.0,
+     "y": 17.0,
+     "width": 56.0,
+     "height": 21.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "characters": "9:41",
+     "fontFamily": "Inter",
+     "fontSize": 17.0,
+     "fontStyle": "SemiBold",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "center"
+    },
+    {
+     "id": 691,
+     "name": "s1",
+     "type": "RECTANGLE",
+     "x": 292.0,
+     "y": 26.0,
+     "width": 3.0,
+     "height": 4.5,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    },
+    {
+     "id": 692,
+     "name": "s2",
+     "type": "RECTANGLE",
+     "x": 297.0,
+     "y": 23.5,
+     "width": 3.0,
+     "height": 7.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    },
+    {
+     "id": 693,
+     "name": "s3",
+     "type": "RECTANGLE",
+     "x": 302.0,
+     "y": 21.0,
+     "width": 3.0,
+     "height": 9.5,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    },
+    {
+     "id": 694,
+     "name": "s4",
+     "type": "RECTANGLE",
+     "x": 307.0,
+     "y": 18.5,
+     "width": 3.0,
+     "height": 12.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    },
+    {
+     "id": 695,
+     "name": "wifi",
+     "type": "VECTOR",
+     "x": 317.0,
+     "y": 19.65,
+     "width": 15.0,
+     "height": 8.95,
+     "strokes": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 2.0
+    },
+    {
+     "id": 696,
+     "name": "bat",
+     "type": "RECTANGLE",
+     "x": 339.0,
+     "y": 18.5,
+     "width": 25.0,
+     "height": 12.0,
+     "strokes": [
+      {
+       "color": "#1F2933",
+       "opacity": 0.4000000059604645,
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 1.0,
+     "cornerRadius": 3.5
+    },
+    {
+     "id": 697,
+     "name": "batfill",
+     "type": "RECTANGLE",
+     "x": 341.0,
+     "y": 20.5,
+     "width": 21.0,
+     "height": 8.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 2.0
+    },
+    {
+     "id": 698,
+     "name": "nub",
+     "type": "RECTANGLE",
+     "x": 365.0,
+     "y": 22.5,
+     "width": 1.5,
+     "height": 4.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "opacity": 0.4000000059604645,
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 1.0
+    }
+   ]
+  },
+  {
+   "id": 699,
+   "name": "atrás",
+   "type": "FRAME",
+   "x": 10.0,
+   "y": 60.0,
+   "width": 110.0,
+   "height": 37.0,
+   "children": [
+    {
+     "id": 700,
+     "name": "Vector",
+     "type": "VECTOR",
+     "x": 4.0,
+     "y": 11.5,
+     "width": 7.0,
+     "height": 14.0,
+     "strokes": [
+      {
+       "color": "#0089A7",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 2.4
+    },
+    {
+     "id": 701,
+     "name": "Factura luz",
+     "type": "TEXT",
+     "x": 13.0,
+     "y": 8.0,
+     "width": 89.0,
+     "height": 21.0,
+     "fills": [
+      {
+       "color": "#0089A7",
+       "type": "solid"
+      }
+     ],
+     "characters": "Factura luz",
+     "fontFamily": "Inter",
+     "fontSize": 17.0,
+     "fontStyle": "Regular",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "left"
+    }
+   ]
+  },
+  {
+   "id": 702,
+   "name": "copiar",
+   "type": "FRAME",
+   "x": 281.0,
+   "y": 57.0,
+   "width": 40.0,
+   "height": 40.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "opacity": 0.800000011920929,
+     "type": "solid"
+    }
+   ],
+   "strokes": [
+    {
+     "color": "#FFFFFF",
+     "type": "solid"
+    }
+   ],
+   "strokeWeight": 1.0,
+   "cornerRadius": 20.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.0784313753247261,
+      "b": 0.20000000298023224,
+      "g": 0.16078431904315948,
+      "r": 0.12156862765550613
+     },
+     "offset": [
+      0.0,
+      4.0
+     ],
+     "radius": 12.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 703,
+     "name": "Vector",
+     "type": "VECTOR",
+     "x": 12.5,
+     "y": 12.5,
+     "width": 15.0,
+     "height": 15.0,
+     "strokes": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 1.8
+    }
+   ]
+  },
+  {
+   "id": 704,
+   "name": "compartir",
+   "type": "FRAME",
+   "x": 329.0,
+   "y": 57.0,
+   "width": 40.0,
+   "height": 40.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "opacity": 0.800000011920929,
+     "type": "solid"
+    }
+   ],
+   "strokes": [
+    {
+     "color": "#FFFFFF",
+     "type": "solid"
+    }
+   ],
+   "strokeWeight": 1.0,
+   "cornerRadius": 20.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.0784313753247261,
+      "b": 0.20000000298023224,
+      "g": 0.16078431904315948,
+      "r": 0.12156862765550613
+     },
+     "offset": [
+      0.0,
+      4.0
+     ],
+     "radius": 12.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 705,
+     "name": "Vector",
+     "type": "VECTOR",
+     "x": 14.5,
+     "y": 11.5,
+     "width": 11.0,
+     "height": 17.0,
+     "strokes": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 1.8
+    }
+   ]
+  },
+  {
+   "id": 706,
+   "name": "Texto",
+   "type": "TEXT",
+   "x": 20.0,
+   "y": 106.0,
+   "width": 90.0,
+   "height": 41.0,
+   "fills": [
+    {
+     "color": "#1F2933",
+     "type": "solid"
+    }
+   ],
+   "characters": "Texto",
+   "fontFamily": "Inter",
+   "fontSize": 34.0,
+   "fontStyle": "Bold",
+   "letterSpacing": "-0.8",
+   "lineHeight": "Auto",
+   "textAlign": "left"
+  },
+  {
+   "id": 707,
+   "name": "Volver a reconocer",
+   "type": "FRAME",
+   "x": 16.0,
+   "y": 160.0,
+   "width": 361.0,
+   "height": 50.0,
+   "fills": [
+    {
+     "color": "#00B4D8",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 25.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.3019607961177826,
+      "b": 0.8470588326454163,
+      "g": 0.7058823704719543,
+      "r": 0.0
+     },
+     "offset": [
+      0.0,
+      6.0
+     ],
+     "radius": 16.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 708,
+     "name": "Vector",
+     "type": "VECTOR",
+     "x": 95.0,
+     "y": 17.0,
+     "width": 16.0,
+     "height": 16.0,
+     "strokes": [
+      {
+       "color": "#FFFFFF",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 1.9
+    },
+    {
+     "id": 709,
+     "name": "Volver a reconocer",
+     "type": "TEXT",
+     "x": 119.0,
+     "y": 15.5,
+     "width": 147.0,
+     "height": 19.0,
+     "fills": [
+      {
+       "color": "#FFFFFF",
+       "type": "solid"
+      }
+     ],
+     "characters": "Volver a reconocer",
+     "fontFamily": "Inter",
+     "fontSize": 16.0,
+     "fontStyle": "SemiBold",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "left"
+    }
+   ]
+  },
+  {
+   "id": 710,
+   "name": "ayuda",
+   "type": "FRAME",
+   "x": 0.0,
+   "y": 222.0,
+   "width": 393.0,
+   "height": 16.0,
+   "children": [
+    {
+     "id": 711,
+     "name": "Vector",
+     "type": "VECTOR",
+     "x": 51.0,
+     "y": 2.25,
+     "width": 9.0,
+     "height": 11.5,
+     "strokes": [
+      {
+       "color": "#7B8794",
+       "type": "solid"
+      }
+     ],
+     "strokeWeight": 1.5
+    },
+    {
+     "id": 712,
+     "name": "Se hace en el propio dispositivo, sin internet.",
+     "type": "TEXT",
+     "x": 66.0,
+     "y": 0.0,
+     "width": 276.0,
+     "height": 16.0,
+     "fills": [
+      {
+       "color": "#7B8794",
+       "type": "solid"
+      }
+     ],
+     "characters": "Se hace en el propio dispositivo, sin internet.",
+     "fontFamily": "Inter",
+     "fontSize": 13.0,
+     "fontStyle": "Regular",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "left"
+    }
+   ]
+  },
+  {
+   "id": 713,
+   "name": "texto editable",
+   "type": "FRAME",
+   "x": 16.0,
+   "y": 254.0,
+   "width": 361.0,
+   "height": 556.0,
+   "fills": [
+    {
+     "color": "#FFFFFF",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 16.0,
+   "effects": [
+    {
+     "blend": "normal",
+     "color": {
+      "a": 0.05098039284348488,
+      "b": 0.20000000298023224,
+      "g": 0.16078431904315948,
+      "r": 0.12156862765550613
+     },
+     "offset": [
+      0.0,
+      2.0
+     ],
+     "radius": 8.0,
+     "showBehind": false,
+     "spread": 0.0,
+     "type": "dropShadow",
+     "visible": true
+    }
+   ],
+   "children": [
+    {
+     "id": 714,
+     "name": "— Página 1 —",
+     "type": "TEXT",
+     "x": 18.0,
+     "y": 18.0,
+     "width": 325.0,
+     "height": 16.0,
+     "fills": [
+      {
+       "color": "#0089A7",
+       "type": "solid"
+      }
+     ],
+     "characters": "— Página 1 —",
+     "fontFamily": "Inter",
+     "fontSize": 13.0,
+     "fontStyle": "SemiBold",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "center"
+    },
+    {
+     "id": 715,
+     "name": "Energía Clara S.A.",
+     "type": "TEXT",
+     "x": 18.0,
+     "y": 44.0,
+     "width": 325.0,
+     "height": 253.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "characters": "Energía Clara S.A.\nC/ Mayor 21 · 28013 Madrid\nFACTURA Nº 2026-0412\nPeriodo: 01/10/2026 – 31/10/2026\n\nEnergía consumida  312 kWh  44,30 €\nPotencia contratada  4,6 kW  13,52 €\nImpuesto eléctrico  2,96 €\nAlquiler contador  0,81 €\nIVA (21%)  12,74 €\nTOTAL  74,33 €",
+     "fontFamily": "Inter",
+     "fontSize": 15.0,
+     "fontStyle": "Regular",
+     "letterSpacing": "0%",
+     "lineHeight": "23",
+     "textAlign": "left"
+    },
+    {
+     "id": 716,
+     "name": "— Página 2 —",
+     "type": "TEXT",
+     "x": 18.0,
+     "y": 307.0,
+     "width": 325.0,
+     "height": 16.0,
+     "fills": [
+      {
+       "color": "#0089A7",
+       "type": "solid"
+      }
+     ],
+     "characters": "— Página 2 —",
+     "fontFamily": "Inter",
+     "fontSize": 13.0,
+     "fontStyle": "SemiBold",
+     "letterSpacing": "0%",
+     "lineHeight": "Auto",
+     "textAlign": "center"
+    },
+    {
+     "id": 717,
+     "name": "Detalle del consumo diario",
+     "type": "TEXT",
+     "x": 18.0,
+     "y": 333.0,
+     "width": 325.0,
+     "height": 115.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "characters": "Detalle del consumo diario\nOctubre 2026 · lectura real del contador\nPunta (10–14 h, 18–22 h)  96 kWh  31 %\nLlano  104 kWh  33 %\nValle  112 kWh  36 %|",
+     "fontFamily": "Inter",
+     "fontSize": 15.0,
+     "fontStyle": "Regular",
+     "letterSpacing": "0%",
+     "lineHeight": "23",
+     "textAlign": "left"
+    }
+   ]
+  },
+  {
+   "id": 718,
+   "name": "HomeIndicator/Light",
+   "type": "INSTANCE",
+   "x": 0.0,
+   "y": 818.0,
+   "width": 393.0,
+   "height": 34.0,
+   "mainComponentName": "HomeIndicator/Light",
+   "children": [
+    {
+     "id": 719,
+     "name": "Rectangle",
+     "type": "RECTANGLE",
+     "x": 127.0,
+     "y": 21.0,
+     "width": 139.0,
+     "height": 5.0,
+     "fills": [
+      {
+       "color": "#1F2933",
+       "type": "solid"
+      }
+     ],
+     "cornerRadius": 3.0
+    }
+   ]
+  }
+ ]
+}

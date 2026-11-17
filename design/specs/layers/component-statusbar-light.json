@@ -1,0 +1,164 @@
+{
+ "id": 3,
+ "name": "StatusBar/Light",
+ "type": "COMPONENT",
+ "x": 2600.0,
+ "y": 60.0,
+ "width": 393.0,
+ "height": 54.0,
+ "children": [
+  {
+   "id": 4,
+   "name": "9:41",
+   "type": "TEXT",
+   "x": 50.0,
+   "y": 17.0,
+   "width": 56.0,
+   "height": 21.0,
+   "fills": [
+    {
+     "color": "#1F2933",
+     "type": "solid"
+    }
+   ],
+   "characters": "9:41",
+   "fontFamily": "Inter",
+   "fontSize": 17.0,
+   "fontStyle": "SemiBold",
+   "letterSpacing": "0%",
+   "lineHeight": "Auto",
+   "textAlign": "center"
+  },
+  {
+   "id": 5,
+   "name": "s1",
+   "type": "RECTANGLE",
+   "x": 292.0,
+   "y": 26.0,
+   "width": 3.0,
+   "height": 4.5,
+   "fills": [
+    {
+     "color": "#1F2933",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 1.0
+  },
+  {
+   "id": 6,
+   "name": "s2",
+   "type": "RECTANGLE",
+   "x": 297.0,
+   "y": 23.5,
+   "width": 3.0,
+   "height": 7.0,
+   "fills": [
+    {
+     "color": "#1F2933",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 1.0
+  },
+  {
+   "id": 7,
+   "name": "s3",
+   "type": "RECTANGLE",
+   "x": 302.0,
+   "y": 21.0,
+   "width": 3.0,
+   "height": 9.5,
+   "fills": [
+    {
+     "color": "#1F2933",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 1.0
+  },
+  {
+   "id": 8,
+   "name": "s4",
+   "type": "RECTANGLE",
+   "x": 307.0,
+   "y": 18.5,
+   "width": 3.0,
+   "height": 12.0,
+   "fills": [
+    {
+     "color": "#1F2933",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 1.0
+  },
+  {
+   "id": 9,
+   "name": "wifi",
+   "type": "VECTOR",
+   "x": 317.0,
+   "y": 19.65,
+   "width": 15.0,
+   "height": 8.95,
+   "strokes": [
+    {
+     "color": "#1F2933",
+     "type": "solid"
+    }
+   ],
+   "strokeWeight": 2.0
+  },
+  {
+   "id": 10,
+   "name": "bat",
+   "type": "RECTANGLE",
+   "x": 339.0,
+   "y": 18.5,
+   "width": 25.0,
+   "height": 12.0,
+   "strokes": [
+    {
+     "color": "#1F2933",
+     "opacity": 0.4000000059604645,
+     "type": "solid"
+    }
+   ],
+   "strokeWeight": 1.0,
+   "cornerRadius": 3.5
+  },
+  {
+   "id": 11,
+   "name": "batfill",
+   "type": "RECTANGLE",
+   "x": 341.0,
+   "y": 20.5,
+   "width": 21.0,
+   "height": 8.0,
+   "fills": [
+    {
+     "color": "#1F2933",
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 2.0
+  },
+  {
+   "id": 12,
+   "name": "nub",
+   "type": "RECTANGLE",
+   "x": 365.0,
+   "y": 22.5,
+   "width": 1.5,
+   "height": 4.0,
+   "fills": [
+    {
+     "color": "#1F2933",
+     "opacity": 0.4000000059604645,
+     "type": "solid"
+    }
+   ],
+   "cornerRadius": 1.0
+  }
+ ]
+}
