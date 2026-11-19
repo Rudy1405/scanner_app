@@ -4,9 +4,11 @@ import 'dart:io';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/scheduler.dart';
 
+import 'l10n.dart';
 import 'store.dart';
 import 'theme.dart';
 import 'ui_home.dart';
@@ -30,14 +32,47 @@ class ScannerApp extends StatefulWidget {
   State<ScannerApp> createState() => _ScannerAppState();
 }
 
-class _ScannerAppState extends State<ScannerApp> {
+class _ScannerAppState extends State<ScannerApp> with WidgetsBindingObserver {
   final GlobalKey _shotKey = GlobalKey();
   int _frames = 0;
   bool _saving = false;
 
+  /// Follows the system: language (Spanish when we don't have it) and dark mode.
+  void _syncSystem() {
+    final dispatcher = ui.PlatformDispatcher.instance;
+    setLang(resolveLang(dispatcher.locales));
+    AppColors.dark = dispatcher.platformBrightness == Brightness.dark;
+  }
+
+  /// Rebuilds every widget: colours and texts are read at build time.
+  void _refreshAll() {
+    if (!mounted) return;
+    setState(_syncSystem);
+    void visit(Element e) {
+      e.markNeedsBuild();
+      e.visitChildren(visit);
+    }
+
+    (context as Element).visitChildren(visit);
+  }
+
+  @override
+  void didChangePlatformBrightness() => _refreshAll();
+
+  @override
+  void didChangeLocales(List<Locale>? locales) => _refreshAll();
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
+    _syncSystem();
+    WidgetsBinding.instance.addObserver(this);
     if (widget.screenshotPath != null) {
       SchedulerBinding.instance.addPostFrameCallback(_onFrame);
       // Safety net: save whatever is there after 20 s.
@@ -82,6 +117,14 @@ class _ScannerAppState extends State<ScannerApp> {
       child: CupertinoApp(
         title: 'Escáner Local',
         debugShowCheckedModeBanner: false,
+        supportedLocales: [for (final l in supportedLangs) Locale(l)],
+        localizationsDelegates: const [
+          GlobalCupertinoLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+        ],
+        localeResolutionCallback: (locale, supported) =>
+            Locale(resolveLang([if (locale != null) locale])),
         theme: buildTheme(),
         home: HomeScreen(store: widget.store),
       ),

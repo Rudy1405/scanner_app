@@ -12,6 +12,7 @@ import 'processing.dart';
 import 'store.dart';
 import 'theme.dart';
 import 'widgets/widgets.dart';
+import 'l10n.dart';
 
 /// A photo on its way to becoming a page: corners, turn and filter.
 class CapturedPage {
@@ -82,6 +83,13 @@ class _CropScreenState extends State<CropScreen> {
   String? tool = 'auto';
   final Map<CapturedPage, Size> sizes = {};
 
+  // Pinch-zoom state for the crop area (reset per page).
+  CapturedPage? _zoomPage;
+  double _zoom = 1;
+  double _startZoom = 1;
+  Offset _pan = Offset.zero;
+  Offset _startContent = Offset.zero;
+
   List<CapturedPage> get pages => widget.pages;
   CapturedPage get page => pages[index];
 
@@ -110,19 +118,19 @@ class _CropScreenState extends State<CropScreen> {
     final ok = await showCupertinoDialog<bool>(
       context: context,
       builder: (ctx) => CupertinoAlertDialog(
-        title: Text('¿Eliminar esta página?', style: ts(17, w600)),
-        content: Text('La foto ${index + 1} se descartará y no se guardará.',
+        title: Text(t('¿Eliminar esta página?'), style: ts(17, w600)),
+        content: Text(t('La foto {n} se descartará y no se guardará.', {'n': index + 1}),
             style: ts(13, w400, AppColors.alertBody)),
         actions: [
           CupertinoDialogAction(
               onPressed: () => Navigator.pop(ctx, false),
               textStyle: ts(17, w400, AppColors.accentDark),
-              child: const Text('Cancelar')),
+              child: Text(t('Cancelar'))),
           CupertinoDialogAction(
               onPressed: () => Navigator.pop(ctx, true),
               isDestructiveAction: true,
               textStyle: ts(17, w600, AppColors.destructive),
-              child: const Text('Eliminar')),
+              child: Text(t('Eliminar'))),
         ],
       ),
     );
@@ -187,7 +195,7 @@ class _CropScreenState extends State<CropScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: GlassIconButton(
-                    label: 'Volver',
+                    label: t('Volver'),
                     icon: CupertinoIcons.chevron_left,
                     style: GlassStyle.subtle,
                     iconSize: 18,
@@ -196,9 +204,9 @@ class _CropScreenState extends State<CropScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 1),
                 child: Column(children: [
-                  Text('Ajustar bordes', style: ts(17, w600, _white)),
+                  Text(t('Ajustar bordes'), style: ts(17, w600, _white)),
                   const SizedBox(height: 2),
-                  Text('Página ${index + 1} de ${pages.length}',
+                  Text(t('Página {n} de {total}', {'n': index + 1, 'total': pages.length}),
                       style: ts(13, w400, const Color(0x8CFFFFFF))),
                 ]),
               ),
@@ -251,7 +259,7 @@ class _CropScreenState extends State<CropScreen> {
                         left: 0,
                         bottom: 0,
                         child: Tap(
-                          label: 'Página ${i + 1}',
+                          label: t('Página {n}', {'n': i + 1}),
                           onTap: () => setState(() {
                             index = i;
                             tool = 'auto';
@@ -288,7 +296,7 @@ class _CropScreenState extends State<CropScreen> {
                           right: 0,
                           top: 0,
                           child: Tap(
-                            label: 'Eliminar página ${i + 1}',
+                            label: t('Eliminar página {n}', {'n': i + 1}),
                             onTap: _delete,
                             child: SizedBox(
                               width: 36,
@@ -328,25 +336,25 @@ class _CropScreenState extends State<CropScreen> {
           child: Row(children: [
             _Tool(
                 icon: CupertinoIcons.crop,
-                label: 'Todo',
+                label: t('Todo'),
                 selected: tool == 'todo',
                 onTap: _all),
             _Tool(
                 icon: CupertinoIcons.wand_stars,
-                label: 'Auto',
+                label: t('Auto'),
                 selected: tool == 'auto',
                 onTap: _auto),
             _Tool(
                 icon: CupertinoIcons.rotate_left,
-                label: 'Izquierda',
+                label: t('Izquierda'),
                 onTap: () => setState(() => page.rotation = (page.rotation + 3) % 4)),
             _Tool(
                 icon: CupertinoIcons.rotate_right,
-                label: 'Derecha',
+                label: t('Derecha'),
                 onTap: () => setState(() => page.rotation = (page.rotation + 1) % 4)),
             const Spacer(),
             PrimaryButton(
-                label: last ? 'Siguiente' : 'Siguiente',
+                label: last ? t('Siguiente') : t('Siguiente'),
                 iconAfter: CupertinoIcons.arrow_right,
                 expand: false,
                 onTap: _next),
@@ -365,46 +373,86 @@ class _CropScreenState extends State<CropScreen> {
       final loupeLeft = dragging != null &&
           offset.dx + corners[dragging! * 2] * size.width > box.maxWidth / 2 &&
           offset.dy + corners[dragging! * 2 + 1] * size.height < box.maxHeight / 2 + 40;
+      if (!identical(_zoomPage, page)) {
+        _zoomPage = page;
+        _zoom = 1;
+        _pan = Offset.zero;
+      }
+      final boxSize = box.biggest;
+      Offset clampPan(Offset p, double z) => Offset(
+          p.dx.clamp(boxSize.width * (1 - z), 0.0), p.dy.clamp(boxSize.height * (1 - z), 0.0));
+      // Screen point -> unzoomed content point.
+      Offset toContent(Offset s) => (s - _pan) / _zoom;
       return Stack(children: [
-        Positioned(
-          left: offset.dx,
-          top: offset.dy,
-          width: size.width,
-          height: size.height,
-          child: Image.memory(page.photo, fit: BoxFit.fill, gaplessPlayback: true),
+        Positioned.fill(
+          child: ClipRect(
+            child: Transform(
+              alignment: Alignment.topLeft,
+              transform: Matrix4.identity()
+                ..translate(_pan.dx, _pan.dy)
+                ..scale(_zoom),
+              child: Stack(children: [
+                Positioned(
+                  left: offset.dx,
+                  top: offset.dy,
+                  width: size.width,
+                  height: size.height,
+                  child: Image.memory(page.photo,
+                      fit: BoxFit.fill, gaplessPlayback: true, filterQuality: FilterQuality.medium),
+                ),
+                Positioned.fill(
+                    child: CustomPaint(painter: _QuadPainter(corners, offset, size, dragging))),
+              ]),
+            ),
+          ),
         ),
         Positioned.fill(
           child: GestureDetector(
             behavior: HitTestBehavior.opaque,
-            onPanStart: (d) {
-              final p = d.localPosition - offset;
-              var best = 0;
-              var bestDist = double.infinity;
-              for (var i = 0; i < 4; i++) {
-                final c = Offset(corners[i * 2] * size.width, corners[i * 2 + 1] * size.height);
-                final dist = (c - p).distance;
-                if (dist < bestDist) {
-                  bestDist = dist;
-                  best = i;
+            onDoubleTap: () => setState(() {
+              _zoom = 1;
+              _pan = Offset.zero;
+            }),
+            onScaleStart: (d) {
+              _startZoom = _zoom;
+              _startContent = toContent(d.localFocalPoint);
+              int? hit;
+              if (d.pointerCount == 1) {
+                final p = toContent(d.localFocalPoint) - offset;
+                var bestDist = double.infinity;
+                for (var i = 0; i < 4; i++) {
+                  final c = Offset(corners[i * 2] * size.width, corners[i * 2 + 1] * size.height);
+                  final dist = (c - p).distance;
+                  if (dist < bestDist) {
+                    bestDist = dist;
+                    hit = i;
+                  }
                 }
+                if (bestDist >= 70 / _zoom) hit = null;
               }
               setState(() {
-                dragging = bestDist < 70 ? best : null;
-                if (dragging != null) tool = null;
+                dragging = hit;
+                if (hit != null) tool = null;
               });
             },
-            onPanUpdate: (d) {
+            onScaleUpdate: (d) {
               final i = dragging;
-              if (i == null) return;
-              final p = d.localPosition - offset;
+              if (i != null && d.pointerCount == 1) {
+                final p = toContent(d.localFocalPoint) - offset;
+                setState(() {
+                  corners[i * 2] = (p.dx / size.width).clamp(0.0, 1.0);
+                  corners[i * 2 + 1] = (p.dy / size.height).clamp(0.0, 1.0);
+                });
+                return;
+              }
               setState(() {
-                corners[i * 2] = (p.dx / size.width).clamp(0.0, 1.0);
-                corners[i * 2 + 1] = (p.dy / size.height).clamp(0.0, 1.0);
+                dragging = null;
+                final z = (_startZoom * d.scale).clamp(1.0, 6.0);
+                _zoom = z;
+                _pan = clampPan(d.localFocalPoint - _startContent * z, z);
               });
             },
-            onPanEnd: (_) => setState(() => dragging = null),
-            onPanCancel: () => setState(() => dragging = null),
-            child: CustomPaint(painter: _QuadPainter(corners, offset, size, dragging)),
+            onScaleEnd: (_) => setState(() => dragging = null),
           ),
         ),
         if (dragging != null)
@@ -421,6 +469,50 @@ class _CropScreenState extends State<CropScreen> {
         if (detecting) const Center(child: CupertinoActivityIndicator(color: _white, radius: 14)),
       ]);
     });
+  }
+}
+
+/// Pinch to zoom, drag to move when zoomed, double-tap to reset.
+class _ZoomView extends StatefulWidget {
+  const _ZoomView({required this.child});
+  final Widget child;
+
+  @override
+  State<_ZoomView> createState() => _ZoomViewState();
+}
+
+class _ZoomViewState extends State<_ZoomView> {
+  final controller = TransformationController();
+  bool zoomed = false;
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      final z = controller.value.getMaxScaleOnAxis() > 1.01;
+      if (z != zoomed) setState(() => zoomed = z);
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onDoubleTap: () => controller.value = Matrix4.identity(),
+      child: InteractiveViewer(
+        transformationController: controller,
+        minScale: 1,
+        maxScale: 6,
+        panEnabled: zoomed,
+        clipBehavior: Clip.hardEdge,
+        child: widget.child,
+      ),
+    );
   }
 }
 
@@ -441,7 +533,7 @@ class _BlurryNotice extends StatelessWidget {
         const Icon(CupertinoIcons.exclamationmark_triangle_fill,
             size: 15, color: AppColors.destructiveOnDark),
         const SizedBox(width: 7),
-        Text('Foto movida', style: ts(13, w600, _white)),
+        Text(t('Foto movida'), style: ts(13, w600, _white)),
         if (onDelete != null) ...[
           const SizedBox(width: 10),
           Tap(
@@ -452,7 +544,7 @@ class _BlurryNotice extends StatelessWidget {
                 color: const Color(0x26FFFFFF),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Text('Eliminar', style: ts(13, w600, AppColors.destructiveOnDark)),
+              child: Text(t('Eliminar'), style: ts(13, w600, AppColors.destructiveOnDark)),
             ),
           ),
         ],
@@ -686,7 +778,7 @@ class _FilterScreenState extends State<FilterScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: GlassIconButton(
-                    label: 'Volver',
+                    label: t('Volver'),
                     icon: CupertinoIcons.chevron_left,
                     style: GlassStyle.subtle,
                     iconSize: 18,
@@ -695,11 +787,11 @@ class _FilterScreenState extends State<FilterScreen> {
               Padding(
                 padding: const EdgeInsets.only(top: 1),
                 child: Column(children: [
-                  Text('Filtro', style: ts(17, w600, _white)),
+                  Text(t('Filtro'), style: ts(17, w600, _white)),
                   const SizedBox(height: 2),
                   ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: MediaQuery.sizeOf(context).width - 140),
-                    child: Text('${widget.title} · $n ${n == 1 ? 'página' : 'páginas'}',
+                    child: Text('${widget.title} · $n ${plural(n, 'página', 'páginas')}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: ts(13, w400, const Color(0x8CFFFFFF))),
@@ -734,7 +826,9 @@ class _FilterScreenState extends State<FilterScreen> {
                           ),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(3),
-                              child: Image.memory(bytes, gaplessPlayback: true)),
+                              child: _ZoomView(
+                                  child: Image.memory(bytes,
+                                      gaplessPlayback: true, filterQuality: FilterQuality.medium))),
                         ),
                 ),
               );
@@ -804,7 +898,7 @@ class _FilterScreenState extends State<FilterScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(color: AppColors.darkPanel, borderRadius: BorderRadius.circular(14)),
               child: Row(children: [
-                Expanded(child: Text('Aplicar a todas las páginas', style: ts(15, w400, _white))),
+                Expanded(child: Text(t('Aplicar a todas las páginas'), style: ts(15, w400, _white))),
                 CupertinoSwitch(
                     value: applyAll,
                     activeTrackColor: AppColors.accent,
@@ -823,7 +917,7 @@ class _FilterScreenState extends State<FilterScreen> {
         Padding(
           padding: EdgeInsets.fromLTRB(16, 0, 16, pad.bottom + 12),
           child: PrimaryButton(
-              label: n == 1 ? 'Guardar' : 'Guardar $n páginas',
+              label: n == 1 ? t('Guardar') : t('Guardar {n} páginas', {'n': n}),
               height: 54,
               fontSize: 17,
               icon: CupertinoIcons.checkmark_alt,
@@ -851,7 +945,7 @@ class PageImage extends StatelessWidget {
       fit: fit,
       cacheWidth: cacheWidth,
       gaplessPlayback: true,
-      errorBuilder: (_, _, _) => const ColoredBox(
+      errorBuilder: (_, _, _) => ColoredBox(
           color: Color(0xFFE8ECEF),
           child: Center(child: Icon(CupertinoIcons.doc_text, color: AppColors.tertiary))),
     );

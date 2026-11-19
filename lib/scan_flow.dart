@@ -12,6 +12,7 @@ import 'theme.dart';
 import 'ui_camera.dart';
 import 'ui_edit.dart';
 import 'widgets/widgets.dart';
+import 'l10n.dart';
 
 enum ScanSource { camera, gallery }
 
@@ -35,7 +36,7 @@ Future<ScanSource?> askSource(BuildContext context, {bool adding = false}) {
                   height: 52,
                   decoration: BoxDecoration(
                     gradient: primary ? AppColors.primaryGradient : null,
-                    color: primary ? null : CupertinoColors.white,
+                    color: primary ? null : AppColors.surface,
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Icon(icon, size: 24, color: primary ? CupertinoColors.white : AppColors.accent),
@@ -51,7 +52,7 @@ Future<ScanSource?> askSource(BuildContext context, {bool adding = false}) {
                         Text(sub, style: ts(13, w400, AppColors.muted)),
                       ]),
                 ),
-                const Icon(CupertinoIcons.chevron_right, size: 14, color: Color(0xFFB6BEC8)),
+                Icon(CupertinoIcons.chevron_right, size: 14, color: AppColors.tertiary),
               ]),
             ),
           );
@@ -60,7 +61,7 @@ Future<ScanSource?> askSource(BuildContext context, {bool adding = false}) {
         child: Container(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
           decoration: BoxDecoration(
-            color: CupertinoColors.white,
+            color: AppColors.surface,
             borderRadius: BorderRadius.circular(38),
             boxShadow: [
               BoxShadow(
@@ -76,17 +77,17 @@ Future<ScanSource?> askSource(BuildContext context, {bool adding = false}) {
                 decoration: BoxDecoration(
                     color: AppColors.grabber, borderRadius: BorderRadius.circular(3))),
             const SizedBox(height: 18),
-            Text(adding ? 'Añadir páginas' : 'Nuevo documento', style: ts(20, w700)),
+            Text(adding ? t('Añadir páginas') : t('Nuevo documento'), style: ts(20, w700)),
             const SizedBox(height: 16),
             if (isMobile) ...[
-              row(CupertinoIcons.camera_fill, true, 'Escanear con la cámara',
-                  'Varias páginas seguidas, bordes automáticos', ScanSource.camera),
+              row(CupertinoIcons.camera_fill, true, t('Escanear con la cámara'),
+                  t('Varias páginas seguidas, bordes automáticos'), ScanSource.camera),
               const SizedBox(height: 10),
             ],
-            row(CupertinoIcons.photo_on_rectangle, false, 'Importar imágenes',
-                'Elige una o varias fotos de tu galería', ScanSource.gallery),
+            row(CupertinoIcons.photo_on_rectangle, false, t('Importar imágenes'),
+                t('Elige una o varias fotos de tu galería'), ScanSource.gallery),
             const SizedBox(height: 12),
-            SecondaryButton(label: 'Cancelar', onTap: () => Navigator.pop(ctx)),
+            SecondaryButton(label: t('Cancelar'), onTap: () => Navigator.pop(ctx)),
           ]),
         ),
       );
@@ -101,7 +102,7 @@ Future<List<Uint8List>> pickGallery() async {
     return [for (final s in shots) await s.readAsBytes()];
   }
   final files = await openFiles(acceptedTypeGroups: [
-    const XTypeGroup(label: 'Imágenes', extensions: ['jpg', 'jpeg', 'png', 'webp', 'bmp']),
+    XTypeGroup(label: t('Imágenes'), extensions: ['jpg', 'jpeg', 'png', 'webp', 'bmp']),
   ]);
   return [for (final f in files) await f.readAsBytes()];
 }
@@ -117,7 +118,7 @@ Future<ScanDoc?> scanPages(BuildContext context, Store store,
     final photos = await pickGallery();
     if (photos.isEmpty || !context.mounted) return null;
     final pending = photos;
-    pages = await withProgress(context, 'Procesando ${pending.length} páginas…', () async {
+    pages = await withProgress(context, t('Procesando {n} páginas…', {'n': pending.length}), () async {
       final out = <CapturedPage>[];
       for (final p in pending) {
         final (corners, blurry) = await checkPhotoAsync(p, autoCrop: store.settings.autoCrop);
@@ -158,7 +159,7 @@ Future<ScanDoc?> scanPages(BuildContext context, Store store,
           context,
           CupertinoPageRoute(
               builder: (_) => FilterScreen(
-                  pages: pages, store: store, title: into?.name ?? 'Nuevo documento')));
+                  pages: pages, store: store, title: into?.name ?? t('Nuevo documento'))));
       if (ok != true) {
         step = 1;
         continue;
@@ -170,7 +171,7 @@ Future<ScanDoc?> scanPages(BuildContext context, Store store,
 
   final toSave = pages;
   final progress = ValueNotifier<double?>(0);
-  return withProgress(context, 'Guardando…', () async {
+  return withProgress(context, t('Guardando…'), () async {
     final doc = into ?? await store.createDoc();
     for (var i = 0; i < toSave.length; i++) {
       final p = toSave[i];
@@ -184,8 +185,8 @@ Future<ScanDoc?> scanPages(BuildContext context, Store store,
 
 /// "2 páginas · A4".
 String pagesSubtitle(int n, Settings s) {
-  final size = s.pageSize == PdfPageSize.fit ? 'Ajustar' : s.pageSize.label;
-  return '$n ${n == 1 ? 'página' : 'páginas'} · $size';
+  final size = s.pageSize == PdfPageSize.fit ? t('Ajustar') : s.pageSize.label;
+  return '$n ${plural(n, 'página', 'páginas')} · $size';
 }
 
 /// Progress card over the screen. [progress] null → spinning ring.

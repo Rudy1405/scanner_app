@@ -12,14 +12,15 @@ import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 
 import 'processing.dart';
+import 'l10n.dart';
 
 enum PdfPageSize { a4, letter, fit }
 
 extension PdfPageSizeLabel on PdfPageSize {
   String get label => switch (this) {
         PdfPageSize.a4 => 'A4',
-        PdfPageSize.letter => 'Carta',
-        PdfPageSize.fit => 'Ajustar a la imagen',
+        PdfPageSize.letter => t('Carta'),
+        PdfPageSize.fit => t('Ajustar a la imagen'),
       };
 }
 
@@ -202,7 +203,7 @@ class Store extends ChangeNotifier {
     final when = at ?? DateTime.now();
     final doc = ScanDoc(
       id: id,
-      name: name ?? 'Escaneo ${_stamp(when)}',
+      name: name ?? t('Escaneo {date}', {'date': _stamp(when)}),
       created: when,
       modified: when,
       dir: dir,

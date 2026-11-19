@@ -14,6 +14,7 @@ import 'theme.dart';
 import 'ui_edit.dart';
 import 'ui_misc.dart';
 import 'widgets/widgets.dart';
+import 'l10n.dart';
 
 const _white = CupertinoColors.white;
 
@@ -44,14 +45,14 @@ class _DocScreenState extends State<DocScreen> {
 
   Future<void> _pdf({required bool share}) async {
     final path = await withProgress(
-        context, 'Creando PDF…', () => exportPdf(doc, store.settings.pageSize, share: share),
+        context, t('Creando PDF…'), () => exportPdf(doc, store.settings.pageSize, share: share),
         subtitle: pagesSubtitle(doc.pages.length, store.settings));
-    if (path != null && mounted) showToast(context, 'PDF guardado');
+    if (path != null && mounted) showToast(context, t('PDF guardado'));
   }
 
   Future<void> _jpg() async {
     final path = await exportImages(doc, share: true);
-    if (path != null && mounted) showToast(context, 'Imágenes guardadas');
+    if (path != null && mounted) showToast(context, t('Imágenes guardadas'));
   }
 
   Future<void> _text() async {
@@ -60,8 +61,8 @@ class _DocScreenState extends State<DocScreen> {
   }
 
   Future<void> _delete() async {
-    if (await confirm(context, '¿Eliminar «${doc.name}»?',
-        'Se borrará de este $deviceWord y no se puede deshacer.')) {
+    if (await confirm(context, t('¿Eliminar «{name}»?', {'name': doc.name}),
+        t('Se borrará de este {device} y no se puede deshacer.', {'device': deviceWord}))) {
       await store.deleteDoc(doc);
       if (mounted) Navigator.pop(context);
     }
@@ -73,21 +74,21 @@ class _DocScreenState extends State<DocScreen> {
       builder: (ctx) => CupertinoActionSheet(
         actions: [
           CupertinoActionSheetAction(
-              onPressed: () => Navigator.pop(ctx, 'rename'), child: const Text('Cambiar nombre')),
+              onPressed: () => Navigator.pop(ctx, 'rename'), child: Text(t('Cambiar nombre'))),
           CupertinoActionSheetAction(
-              onPressed: () => Navigator.pop(ctx, 'pdf'), child: const Text('Compartir PDF')),
+              onPressed: () => Navigator.pop(ctx, 'pdf'), child: Text(t('Compartir PDF'))),
           CupertinoActionSheetAction(
               onPressed: () => Navigator.pop(ctx, 'save'),
-              child: const Text('Guardar PDF en Archivos')),
+              child: Text(t('Guardar PDF en Archivos'))),
           CupertinoActionSheetAction(
-              onPressed: () => Navigator.pop(ctx, 'jpg'), child: const Text('Exportar JPG')),
+              onPressed: () => Navigator.pop(ctx, 'jpg'), child: Text(t('Exportar JPG'))),
           CupertinoActionSheetAction(
               isDestructiveAction: true,
               onPressed: () => Navigator.pop(ctx, 'delete'),
-              child: const Text('Eliminar documento')),
+              child: Text(t('Eliminar documento'))),
         ],
         cancelButton: CupertinoActionSheetAction(
-            onPressed: () => Navigator.pop(ctx), child: const Text('Cancelar')),
+            onPressed: () => Navigator.pop(ctx), child: Text(t('Cancelar'))),
       ),
     );
     switch (action) {
@@ -127,15 +128,15 @@ class _DocScreenState extends State<DocScreen> {
                   SizedBox(
                     height: 44,
                     child: Row(children: [
-                      BackLink(label: 'Documentos', onTap: () => Navigator.pop(context)),
+                      BackLink(label: t('Documentos'), onTap: () => Navigator.pop(context)),
                       const Spacer(),
                       GlassIconButton(
-                          label: 'Ordenar páginas',
+                          label: t('Ordenar páginas'),
                           icon: CupertinoIcons.arrow_up_arrow_down,
                           onTap: _reorder),
                       const SizedBox(width: 8),
                       GlassIconButton(
-                          label: 'Más opciones', icon: CupertinoIcons.ellipsis, onTap: _more),
+                          label: t('Más opciones'), icon: CupertinoIcons.ellipsis, onTap: _more),
                     ]),
                   ),
                   const SizedBox(height: 10),
@@ -144,12 +145,12 @@ class _DocScreenState extends State<DocScreen> {
                     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Tap(
                         minSize: 44,
-                        label: 'Cambiar nombre: ${doc.name}',
+                        label: t('Cambiar nombre: {name}', {'name': doc.name}),
                         onTap: _rename,
                         child: Text.rich(
                           TextSpan(children: [
                             TextSpan(text: doc.name),
-                            const WidgetSpan(
+                            WidgetSpan(
                                 alignment: PlaceholderAlignment.middle,
                                 child: Padding(
                                   padding: EdgeInsets.only(left: 8),
@@ -163,7 +164,7 @@ class _DocScreenState extends State<DocScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                          '${doc.pages.length} ${doc.pages.length == 1 ? 'página' : 'páginas'} · ${friendlyDate(doc.modified)}',
+                          '${doc.pages.length} ${plural(doc.pages.length, 'página', 'páginas')} · ${friendlyDate(doc.modified)}',
                           style: ts(14, w400, AppColors.muted)),
                     ]),
                   ),
@@ -191,9 +192,9 @@ class _DocScreenState extends State<DocScreen> {
             right: 16,
             bottom: pad.bottom + 8,
             child: FloatingActionBar(actions: [
-              BarAction(CupertinoIcons.camera, 'Añadir', _addPages),
+              BarAction(CupertinoIcons.camera, t('Añadir'), _addPages),
               BarAction(CupertinoIcons.doc_text, 'PDF', () => _pdf(share: true)),
-              BarAction(CupertinoIcons.text_cursor, 'Texto', _text),
+              BarAction(CupertinoIcons.text_cursor, t('Texto'), _text),
               BarAction(CupertinoIcons.photo, 'JPG', _jpg),
             ]),
           ),
@@ -258,11 +259,11 @@ class _DocScreenState extends State<DocScreen> {
               width: 44,
               height: 44,
               decoration:
-                  const BoxDecoration(color: AppColors.accentTint, shape: BoxShape.circle),
-              child: const Icon(CupertinoIcons.plus, size: 20, color: AppColors.accentDark),
+                  BoxDecoration(color: AppColors.accentTint, shape: BoxShape.circle),
+              child: Icon(CupertinoIcons.plus, size: 20, color: AppColors.accentDark),
             ),
             const SizedBox(height: 10),
-            Text('Añadir páginas', style: ts(14, w600, AppColors.accentDark)),
+            Text(t('Añadir páginas'), style: ts(14, w600, AppColors.accentDark)),
           ]),
         ),
       );
@@ -307,9 +308,9 @@ class _ReorderScreenState extends State<ReorderScreen> {
             Tap(
                 minSize: 44,
                 onTap: () => Navigator.pop(context),
-                child: Text('Cancelar', style: ts(17, w400, AppColors.accentDark))),
+                child: Text(t('Cancelar'), style: ts(17, w400, AppColors.accentDark))),
             Expanded(
-                child: Text('Ordenar páginas',
+                child: Text(t('Ordenar páginas'),
                     textAlign: TextAlign.center, style: ts(17, w600))),
             Tap(
               onTap: _done,
@@ -318,15 +319,15 @@ class _ReorderScreenState extends State<ReorderScreen> {
                 height: 44,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    color: AppColors.accentDark, borderRadius: BorderRadius.circular(22)),
-                child: Text('Listo', style: ts(16, w600, _white)),
+                    color: AppColors.accentFill, borderRadius: BorderRadius.circular(22)),
+                child: Text(t('Listo'), style: ts(16, w600, _white)),
               ),
             ),
           ]),
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 22, 0, 8),
-          child: Text('MANTÉN PULSADO Y ARRASTRA PARA REORDENAR', style: ts(12, w400, AppColors.muted)),
+          child: Text(t('MANTÉN PULSADO Y ARRASTRA PARA REORDENAR'), style: ts(12, w400, AppColors.muted)),
         ),
         Container(
           decoration: BoxDecoration(
@@ -372,13 +373,13 @@ class _ReorderScreenState extends State<ReorderScreen> {
                     color: _white,
                     border: i == order.length - 1
                         ? null
-                        : const Border(bottom: BorderSide(color: AppColors.separator)),
+                        : Border(bottom: BorderSide(color: AppColors.separator)),
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 14),
                   child: Row(children: [
                     if (order.length > 1)
                       Tap(
-                        label: 'Quitar página ${i + 1}',
+                        label: t('Quitar página {n}', {'n': i + 1}),
                         minSize: 44,
                         onTap: () => setState(() => order.remove(page)),
                         child: Container(
@@ -406,12 +407,12 @@ class _ReorderScreenState extends State<ReorderScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Página ${i + 1}', style: ts(16, w600)),
+                            Text(t('Página {n}', {'n': i + 1}), style: ts(16, w600)),
                             const SizedBox(height: 2),
-                            Text('Filtro: ${page.filter.label}', style: ts(13, w400, AppColors.muted)),
+                            Text(t('Filtro: {name}', {'name': page.filter.label}), style: ts(13, w400, AppColors.muted)),
                           ]),
                     ),
-                    const Icon(CupertinoIcons.line_horizontal_3, size: 18, color: AppColors.tertiary),
+                    Icon(CupertinoIcons.line_horizontal_3, size: 18, color: AppColors.tertiary),
                   ]),
                 ),
               );
@@ -420,7 +421,7 @@ class _ReorderScreenState extends State<ReorderScreen> {
         ),
         Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 0, 0),
-          child: Text('El orden se usa al exportar el PDF.', style: ts(13, w400, AppColors.muted)),
+          child: Text(t('El orden se usa al exportar el PDF.'), style: ts(13, w400, AppColors.muted)),
         ),
       ]),
     );
@@ -487,7 +488,7 @@ class _PageViewerState extends State<PageViewer> {
       ..corners = draft.corners
       ..rotation = draft.rotation
       ..filter = draft.filter;
-    await withProgress(context, 'Guardando…', () => store.renderPage(doc, page),
+    await withProgress(context, t('Guardando…'), () => store.renderPage(doc, page),
         subtitle: pagesSubtitle(1, store.settings));
     if (mounted) setState(() {});
   }
@@ -501,19 +502,19 @@ class _PageViewerState extends State<PageViewer> {
             builder: (_) => FilterScreen(pages: [draft], store: store, title: doc.name)));
     if (ok != true || !mounted) return;
     page.filter = draft.filter;
-    await withProgress(context, 'Guardando…', () => store.renderPage(doc, page),
+    await withProgress(context, t('Guardando…'), () => store.renderPage(doc, page),
         subtitle: pagesSubtitle(1, store.settings));
     if (mounted) setState(() {});
   }
 
   Future<void> _rotate() async {
     page.rotation = (page.rotation + 1) % 4;
-    await withProgress(context, 'Girando…', () => store.renderPage(doc, page));
+    await withProgress(context, t('Girando…'), () => store.renderPage(doc, page));
     if (mounted) setState(() {});
   }
 
   Future<void> _delete() async {
-    if (!await confirm(context, '¿Eliminar la página ${index + 1}?', 'No se puede deshacer.')) {
+    if (!await confirm(context, t('¿Eliminar la página {n}?', {'n': index + 1}), t('No se puede deshacer.'))) {
       return;
     }
     final wasLast = doc.pages.length == 1;
@@ -577,7 +578,7 @@ class _PageViewerState extends State<PageViewer> {
               right: 16,
               child: Row(children: [
                 GlassIconButton(
-                    label: 'Volver',
+                    label: t('Volver'),
                     icon: CupertinoIcons.chevron_left,
                     style: GlassStyle.subtle,
                     iconSize: 18,
@@ -593,7 +594,7 @@ class _PageViewerState extends State<PageViewer> {
                 ),
                 const Spacer(),
                 GlassIconButton(
-                    label: 'Compartir',
+                    label: t('Compartir'),
                     icon: CupertinoIcons.share,
                     style: GlassStyle.subtle,
                     onTap: _share),
@@ -620,7 +621,7 @@ class _PageViewerState extends State<PageViewer> {
                 AnimatedOpacity(
                   opacity: showHelp ? 1 : 0,
                   duration: const Duration(milliseconds: 300),
-                  child: Text('Desliza para cambiar de página · Pellizca para ampliar',
+                  child: Text(t('Desliza para cambiar de página · Pellizca para ampliar'),
                       style: ts(12, w400, const Color(0x73FFFFFF))),
                 ),
               ]),
@@ -630,10 +631,10 @@ class _PageViewerState extends State<PageViewer> {
               right: 16,
               bottom: pad.bottom + 8,
               child: FloatingActionBar(dark: true, actions: [
-                BarAction(CupertinoIcons.crop_rotate, 'Recortar', _recrop),
-                BarAction(CupertinoIcons.wand_stars, 'Filtro', _filter),
-                BarAction(CupertinoIcons.rotate_right, 'Girar', _rotate),
-                BarAction(CupertinoIcons.trash, 'Eliminar', _delete,
+                BarAction(CupertinoIcons.crop_rotate, t('Recortar'), _recrop),
+                BarAction(CupertinoIcons.wand_stars, t('Filtro'), _filter),
+                BarAction(CupertinoIcons.rotate_right, t('Girar'), _rotate),
+                BarAction(CupertinoIcons.trash, t('Eliminar'), _delete,
                     color: AppColors.destructiveOnDark),
               ]),
             ),

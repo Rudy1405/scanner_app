@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="linear-gradient-1" x1="312.635" y1="-101.581" x2="711.365" y2="1125.581" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#44c8e8"/>
+      <stop offset="1" stop-color="#00829f"/>
+    </linearGradient>
+    <filter id="filter-1" filterUnits="userSpaceOnUse" x="143" y="143" width="738" height="738" data-vc-blend="multiply" color-interpolation-filters="sRGB"><feGaussianBlur in="SourceAlpha" stdDeviation="11"/><feOffset dx="0" dy="14" result="shadow"/><feFlood flood-color="#004a5c" flood-opacity="0.28"/><feComposite in2="shadow" operator="in" result="paint"/><feMerge><feMergeNode in="paint"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <title>Escaner Local - App Icon</title>
+  <g id="Layer_1" data-name="Layer 1">
+    <rect id="Fondo__full-bleed_" data-name="Fondo (full-bleed)" x="0" y="0" width="1024" height="1024" fill="url(#linear-gradient-1)"/>
+    <g filter="url(#filter-1)">
+      <g>
+        <path id="Esquina_TL" data-name="Esquina TL" d="M228 400 L228 324 C228 270.981 270.981 228 324 228 L400 228" fill="none" stroke="#ffffff" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+        <path id="Esquina_TR" data-name="Esquina TR" d="M624 228 L700 228 C753.019 228 796 270.981 796 324 L796 400" fill="none" stroke="#ffffff" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+        <path id="Esquina_BR" data-name="Esquina BR" d="M796 624 L796 700 C796 753.019 753.019 796 700 796 L624 796" fill="none" stroke="#ffffff" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+        <path id="Esquina_BL" data-name="Esquina BL" d="M400 796 L324 796 C270.981 796 228 753.019 228 700 L228 624" fill="none" stroke="#ffffff" stroke-width="72" stroke-linecap="round" stroke-linejoin="round"/>
+        <line id="Linea_1" data-name="Linea 1" x1="436" y1="384" x2="588" y2="384" fill="none" stroke="#ffffff" stroke-width="72" stroke-linecap="round" stroke-miterlimit="10"/>
+        <line id="Linea_2" data-name="Linea 2" x1="436" y1="512" x2="588" y2="512" fill="none" stroke="#ffffff" stroke-width="72" stroke-linecap="round" stroke-miterlimit="10"/>
+        <line id="Linea_3" data-name="Linea 3" x1="436" y1="640" x2="520" y2="640" fill="none" stroke="#ffffff" stroke-width="72" stroke-linecap="round" stroke-miterlimit="10"/>
+      </g>
+    </g>
+  </g>
+</svg>

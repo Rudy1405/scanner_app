@@ -11,23 +11,23 @@ import 'ui_doc.dart';
 import 'ui_edit.dart';
 import 'ui_misc.dart';
 import 'widgets/widgets.dart';
+import 'l10n.dart';
 
-const _months = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
 String _two(int v) => v.toString().padLeft(2, '0');
 
 bool _sameDay(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
 
 /// "Hoy · 10:30", "Ayer · 18:05", "12 nov 2026 · 18:05".
-String homeDate(DateTime t, {bool withTime = true}) {
+String homeDate(DateTime d, {bool withTime = true}) {
   final now = DateTime.now();
-  final time = '${_two(t.hour)}:${_two(t.minute)}';
+  final time = '${_two(d.hour)}:${_two(d.minute)}';
   String day;
-  if (_sameDay(t, now)) {
-    day = 'Hoy';
-  } else if (_sameDay(t, now.subtract(const Duration(days: 1)))) {
-    day = 'Ayer';
+  if (_sameDay(d, now)) {
+    day = t('Hoy');
+  } else if (_sameDay(d, now.subtract(const Duration(days: 1)))) {
+    day = t('Ayer');
   } else {
-    day = '${t.day} ${_months[t.month - 1]} ${t.year}';
+    day = '${d.day} ${monthsShort[d.month - 1]} ${d.year}';
   }
   return withTime ? '$day · $time' : day;
 }
@@ -73,16 +73,16 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(doc.name),
         actions: [
           CupertinoActionSheetAction(
-              onPressed: () => Navigator.pop(ctx, 'rename'), child: const Text('Cambiar nombre')),
+              onPressed: () => Navigator.pop(ctx, 'rename'), child: Text(t('Cambiar nombre'))),
           CupertinoActionSheetAction(
-              onPressed: () => Navigator.pop(ctx, 'pdf'), child: const Text('Compartir PDF')),
+              onPressed: () => Navigator.pop(ctx, 'pdf'), child: Text(t('Compartir PDF'))),
           CupertinoActionSheetAction(
               isDestructiveAction: true,
               onPressed: () => Navigator.pop(ctx, 'delete'),
-              child: const Text('Eliminar')),
+              child: Text(t('Eliminar'))),
         ],
         cancelButton: CupertinoActionSheetAction(
-            onPressed: () => Navigator.pop(ctx), child: const Text('Cancelar')),
+            onPressed: () => Navigator.pop(ctx), child: Text(t('Cancelar'))),
       ),
     );
     if (!mounted) return;
@@ -95,11 +95,11 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       case 'pdf':
         await withProgress(
-            context, 'Creando PDF…', () => exportPdf(doc, store.settings.pageSize, share: true),
+            context, t('Creando PDF…'), () => exportPdf(doc, store.settings.pageSize, share: true),
             subtitle: pagesSubtitle(doc.pages.length, store.settings));
       case 'delete':
-        if (await confirm(context, '¿Eliminar «${doc.name}»?',
-            'Se borrará de este $deviceWord y no se puede deshacer.')) {
+        if (await confirm(context, t('¿Eliminar «{name}»?', {'name': doc.name}),
+            t('Se borrará de este {device} y no se puede deshacer.', {'device': deviceWord}))) {
           await store.deleteDoc(doc);
         }
     }
@@ -176,14 +176,18 @@ class _HomeScreenState extends State<HomeScreen> {
               right: 0,
               bottom: 0,
               height: 162 + pad.bottom,
-              child: const IgnorePointer(
+              child: IgnorePointer(
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       stops: [0, 0.55, 1],
-                      colors: [Color(0x00F4F6F8), Color(0xE6F4F6F8), Color(0xFFF4F6F8)],
+                      colors: [
+                        AppColors.background.withValues(alpha: 0),
+                        AppColors.background.withValues(alpha: 0.9),
+                        AppColors.background
+                      ],
                     ),
                   ),
                 ),
@@ -193,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
               bottom: pad.bottom + 34,
               left: width / 2 - 36 - 24 - 52,
               child: GlassFab(
-                  label: 'Importar imágenes',
+                  label: t('Importar imágenes'),
                   icon: CupertinoIcons.photo_on_rectangle,
                   onTap: () => _scan(ScanSource.gallery)),
             ),
@@ -219,14 +223,14 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Padding(
             padding: const EdgeInsets.only(left: 4),
-            child: Semantics(header: true, child: Text('Mis documentos', style: ts(34, w700)))),
+            child: Semantics(header: true, child: Text(t('Mis documentos'), style: ts(34, w700)))),
         const SizedBox(height: 14),
         // With nothing saved yet there is nothing to search: the empty state leads.
         if (hasDocs) ...[
           SizedBox(
             height: 44,
             child: CupertinoSearchTextField(
-              placeholder: 'Buscar por nombre o texto',
+              placeholder: t('Buscar por nombre o texto'),
               placeholderStyle: ts(16, w400, AppColors.muted),
               style: ts(16, w400),
               backgroundColor: AppColors.fillQuaternary,
@@ -237,18 +241,18 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 12),
         ],
-        PrivacyPill(text: 'Sin anuncios · Sin nube · Todo queda en tu $deviceWord'),
+        PrivacyPill(text: t('Sin anuncios · Sin nube · Todo queda en tu {device}', {'device': deviceWord})),
         if (hasDocs) ...[
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 4),
             child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
-              Text(searching ? 'Resultados' : 'Recientes', style: ts(20, w700)),
+              Text(searching ? t('Resultados') : t('Recientes'), style: ts(20, w700)),
               const Spacer(),
               Text(
                   searching
-                      ? '$count ${count == 1 ? 'resultado' : 'resultados'}'
-                      : '$count ${count == 1 ? 'documento' : 'documentos'}',
+                      ? '$count ${plural(count, 'resultado', 'resultados')}'
+                      : '$count ${plural(count, 'documento', 'documentos')}',
                   style: ts(14, w400, AppColors.muted)),
             ]),
           ),
@@ -274,13 +278,13 @@ class _TopBar extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final t = ((shrinkOffset - 40) / 40).clamp(0.0, 1.0);
+    final p = ((shrinkOffset - 40) / 40).clamp(0.0, 1.0);
     return Container(
       padding: EdgeInsets.fromLTRB(16, top + 4, 16, 4),
       decoration: BoxDecoration(
-        color: AppColors.background.withValues(alpha: 0.92 * t + 0.0),
+        color: AppColors.background.withValues(alpha: 0.92 * p + 0.0),
         border: Border(
-            bottom: BorderSide(color: AppColors.separator.withValues(alpha: t))),
+            bottom: BorderSide(color: AppColors.separator.withValues(alpha: p))),
       ),
       child: Row(children: [
         const SizedBox(width: 4),
@@ -288,16 +292,16 @@ class _TopBar extends SliverPersistentHeaderDelegate {
         const SizedBox(width: 8),
         Expanded(
           child: Stack(alignment: Alignment.centerLeft, children: [
-            Opacity(opacity: 1 - t, child: Text('Escáner Local', style: ts(16, w600))),
-            Opacity(opacity: t, child: Text('Mis documentos', style: ts(17, w600))),
+            Opacity(opacity: 1 - p, child: Text('Escáner Local', style: ts(16, w600))),
+            Opacity(opacity: p, child: Text(t('Mis documentos'), style: ts(17, w600))),
           ]),
         ),
         GlassIconButton(
-            label: grid ? 'Ver como lista' : 'Ver como cuadrícula',
+            label: grid ? t('Ver como lista') : t('Ver como cuadrícula'),
             icon: grid ? CupertinoIcons.list_bullet : CupertinoIcons.square_grid_2x2,
             onTap: onGrid),
         const SizedBox(width: 4),
-        GlassIconButton(label: 'Ajustes', icon: CupertinoIcons.gear_alt, onTap: onSettings),
+        GlassIconButton(label: t('Ajustes'), icon: CupertinoIcons.gear_alt, onTap: onSettings),
       ]),
     );
   }
@@ -320,20 +324,20 @@ class _Empty extends StatelessWidget {
                   size: 64, color: searching ? AppColors.tertiary : AppColors.accentDark),
             ),
             const SizedBox(height: 16),
-            Text(searching ? 'Nada coincide con la búsqueda' : 'Escanea tu primer documento',
+            Text(searching ? t('Nada coincide con la búsqueda') : t('Escanea tu primer documento'),
                 textAlign: TextAlign.center, style: ts(20, w700)),
             const SizedBox(height: 6),
             if (!searching) ...[
-              Text('Apunta la cámara a una hoja: detectamos los bordes y la dejamos lista como PDF.',
+              Text(t('Apunta la cámara a una hoja: detectamos los bordes y la dejamos lista como PDF.'),
                   textAlign: TextAlign.center, style: ts(15, w400, AppColors.muted, 1.35)),
               const SizedBox(height: 24),
               PrimaryButton(
-                  label: 'Escanear documento', icon: CupertinoIcons.camera_fill, onTap: onScan),
+                  label: t('Escanear documento'), icon: CupertinoIcons.camera_fill, onTap: onScan),
               const SizedBox(height: 4),
               Tap(
                 minSize: 48,
                 onTap: onImport,
-                child: Text('Importar de la galería', style: ts(16, w600, AppColors.accentDark)),
+                child: Text(t('Importar de la galería'), style: ts(16, w600, AppColors.accentDark)),
               ),
             ],
           ]),
@@ -366,7 +370,7 @@ class _DocRow extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(color: AppColors.separator),
-                  color: CupertinoColors.white,
+                  color: AppColors.surface,
                 ),
                 clipBehavior: Clip.antiAlias,
                 child: cover == null ? null : PageImage(cover.path, cacheWidth: 160),
@@ -383,7 +387,7 @@ class _DocRow extends StatelessWidget {
                       Text(homeDate(doc.modified), style: ts(13, w400, AppColors.muted)),
                       const SizedBox(height: 5),
                       Row(children: [
-                        const Icon(CupertinoIcons.doc_on_doc, size: 11, color: AppColors.muted),
+                        Icon(CupertinoIcons.doc_on_doc, size: 11, color: AppColors.muted),
                         const SizedBox(width: 4),
                         Text('${doc.pages.length}', style: ts(13, w600, AppColors.muted)),
                         if (doc.text.isNotEmpty) ...[const SizedBox(width: 8), const TextChip()],
@@ -391,7 +395,7 @@ class _DocRow extends StatelessWidget {
                     ]),
               ),
               Tap(
-                label: 'Más opciones de ${doc.name}',
+                label: t('Más opciones de {name}', {'name': doc.name}),
                 onTap: onMenu,
                 child: const SizedBox(
                   width: 48,
@@ -402,7 +406,7 @@ class _DocRow extends StatelessWidget {
             ]),
           ),
           if (!last)
-            const Positioned(
+            Positioned(
                 left: 82, right: 0, bottom: 0, child: SizedBox(height: 1, child: ColoredBox(color: AppColors.separator))),
         ]),
       ),
@@ -419,7 +423,7 @@ class _Dots extends StatelessWidget {
               width: 4,
               height: 4,
               margin: const EdgeInsets.symmetric(horizontal: 1.5),
-              decoration: const BoxDecoration(color: AppColors.tertiary, shape: BoxShape.circle)),
+              decoration: BoxDecoration(color: AppColors.tertiary, shape: BoxShape.circle)),
       ]);
 }
 
@@ -439,11 +443,11 @@ class _DocTile extends StatelessWidget {
         Expanded(
           child: Container(
             decoration: BoxDecoration(
-              color: CupertinoColors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(14),
               boxShadow: [
                 BoxShadow(
-                    color: AppColors.text.withValues(alpha: 0.05),
+                    color: AppColors.shadow.withValues(alpha: 0.05),
                     offset: const Offset(0, 2),
                     blurRadius: 8)
               ],

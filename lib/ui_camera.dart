@@ -18,6 +18,7 @@ import 'store.dart';
 import 'theme.dart';
 import 'ui_edit.dart';
 import 'widgets/widgets.dart';
+import 'l10n.dart';
 
 enum CaptureMode { single, multi }
 
@@ -228,12 +229,12 @@ class _CameraScanScreenState extends State<CameraScanScreen>
         setState(() {
           denied = e.code.startsWith('CameraAccessDenied') || e.code == 'CameraAccessRestricted';
           error = denied
-              ? 'Necesitamos la cámara para escanear. Actívala en los ajustes del teléfono.'
-              : 'No se pudo abrir la cámara.';
+              ? t('Necesitamos la cámara para escanear. Actívala en los ajustes del teléfono.')
+              : t('No se pudo abrir la cámara.');
         });
       }
     } catch (_) {
-      if (mounted) setState(() => error = 'No se pudo abrir la cámara.');
+      if (mounted) setState(() => error = t('No se pudo abrir la cámara.'));
     }
   }
 
@@ -410,7 +411,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
         });
         stableSince = null;
         HapticFeedback.heavyImpact();
-        showToast(context, 'La foto salió movida. Mantén el móvil quieto y vuelve a intentarlo.');
+        showToast(context, t('La foto salió movida. Mantén el móvil quieto y vuelve a intentarlo.'));
         return;
       }
       final page = CapturedPage(bytes, shot.corners, shot.processed);
@@ -419,7 +420,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
       shooting = false;
       shotQuad = null;
       if (mounted) {
-        showToast(context, 'No se pudo hacer la foto. Inténtalo de nuevo.');
+        showToast(context, t('No se pudo hacer la foto. Inténtalo de nuevo.'));
         c.startImageStream(_onFrame).catchError((Object _) {});
       }
     }
@@ -474,7 +475,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     if (pages.isEmpty || shooting) return;
     HapticFeedback.lightImpact();
     setState(() => pages.removeLast());
-    showToast(context, 'Página ${pages.length + 1} eliminada');
+    showToast(context, t('Página {n} eliminada', {'n': pages.length + 1}));
   }
 
   void _next() {
@@ -490,20 +491,20 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     final discard = await showCupertinoDialog<bool>(
       context: context,
       builder: (ctx) => CupertinoAlertDialog(
-        title: Text('¿Descartar ${pages.length} ${pages.length == 1 ? 'página' : 'páginas'}?',
+        title: Text(t('¿Descartar {n} {pages}?', {'n': pages.length, 'pages': plural(pages.length, 'página', 'páginas')}),
             style: ts(17, w600)),
-        content: Text('Las fotos que has hecho se perderán.',
+        content: Text(t('Las fotos que has hecho se perderán.'),
             style: ts(13, w400, AppColors.alertBody)),
         actions: [
           CupertinoDialogAction(
               onPressed: () => Navigator.pop(ctx, false),
               textStyle: ts(17, w400, AppColors.accentDark),
-              child: const Text('Seguir escaneando')),
+              child: Text(t('Seguir escaneando'))),
           CupertinoDialogAction(
               onPressed: () => Navigator.pop(ctx, true),
               isDestructiveAction: true,
               textStyle: ts(17, w600, AppColors.destructive),
-              child: const Text('Descartar')),
+              child: Text(t('Descartar'))),
         ],
       ),
     );
@@ -523,7 +524,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
     }
     if (moved > 0 && mounted) {
       showToast(context,
-          moved == 1 ? '1 foto salió movida: revísala al ajustar bordes.' : '$moved fotos salieron movidas: revísalas al ajustar bordes.');
+          moved == 1 ? t('1 foto salió movida: revísala al ajustar bordes.') : t('{n} fotos salieron movidas: revísalas al ajustar bordes.', {'n': moved}));
     }
     if (!mounted) return;
     if (mode == CaptureMode.single || _problem) {
@@ -572,13 +573,13 @@ class _CameraScanScreenState extends State<CameraScanScreen>
 
   String get _hint {
     final n = pages.length + 1;
-    if (!gotFrame) return 'Iniciando la cámara…';
+    if (!gotFrame) return t('Iniciando la cámara…');
     if (_dark && quad == null) {
-      return flash ? 'Muy oscuro · acércate a la luz' : 'Poca luz · activa el flash';
+      return flash ? t('Muy oscuro · acércate a la luz') : t('Poca luz · activa el flash');
     }
-    if (quad == null) return 'Buscando el documento…';
-    if (!auto) return 'Hoja detectada';
-    return pages.isEmpty ? 'Hoja detectada · capturando…' : 'Página $n · hoja detectada';
+    if (quad == null) return t('Buscando el documento…');
+    if (!auto) return t('Hoja detectada');
+    return pages.isEmpty ? t('Hoja detectada · capturando…') : t('Página {n} · hoja detectada', {'n': n});
   }
 
   static const double _barHeight = 112;
@@ -618,7 +619,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
               color: AppColors.darkBg,
               child: _CameraProblem(
                 denied: denied,
-                message: error ?? 'La cámara no responde.',
+                message: error ?? t('La cámara no responde.'),
                 onSettings: _openSettings,
                 onRetry: _retry,
                 onImport: _import,
@@ -679,7 +680,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
           right: 16,
           child: Row(children: [
             GlassIconButton(
-                label: 'Cerrar cámara',
+                label: t('Cerrar cámara'),
                 icon: CupertinoIcons.xmark,
                 style: GlassStyle.dark,
                 color: CupertinoColors.white,
@@ -688,7 +689,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
             if (!_problem) _AutoManual(auto: auto, onChanged: (v) => setState(() => auto = v)),
             const Spacer(),
             GlassIconButton(
-                label: flash ? 'Apagar el flash' : 'Encender el flash',
+                label: flash ? t('Apagar el flash') : t('Encender el flash'),
                 icon: flash ? CupertinoIcons.bolt_fill : CupertinoIcons.bolt_slash_fill,
                 style: GlassStyle.dark,
                 onTap: _problem ? null : _toggleFlash),
@@ -776,7 +777,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
         child: Stack(alignment: Alignment.center, children: [
             Center(
               child: Tap(
-                label: 'Hacer foto',
+                label: t('Hacer foto'),
                 onTap: gotFrame ? _shoot : null,
                 child: Opacity(
                   opacity: gotFrame ? 1 : 0.4,
@@ -807,7 +808,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
               Positioned(
                 left: 36,
                 child: Tap(
-                  label: 'Deshacer la última página',
+                  label: t('Deshacer la última página'),
                   onTap: shooting ? null : _undo,
                   child: const SizedBox(
                     width: 52,
@@ -829,7 +830,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
   }
 
   Widget _importButton() => Tap(
-        label: 'Importar imágenes',
+        label: t('Importar imágenes'),
         onTap: _import,
         child: Container(
           width: 52,
@@ -846,7 +847,7 @@ class _CameraScanScreenState extends State<CameraScanScreen>
   Widget _stack() {
     final last = pages.last;
     return Tap(
-      label: '${pages.length} ${pages.length == 1 ? 'página' : 'páginas'}. Continuar',
+      label: t('{n} {pages}. Continuar', {'n': pages.length, 'pages': plural(pages.length, 'página', 'páginas')}),
       onTap: _next,
       // As in the original: last page's thumbnail, red counter on its corner,
       // "Modificar" under it.
@@ -879,8 +880,8 @@ class _CameraScanScreenState extends State<CameraScanScreen>
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
               decoration: BoxDecoration(
-                  color: AppColors.accentDark, borderRadius: BorderRadius.circular(5)),
-              child: Text('Modificar', style: ts(11, w600, CupertinoColors.white)),
+                  color: AppColors.accentFill, borderRadius: BorderRadius.circular(5)),
+              child: Text(t('Modificar'), style: ts(11, w600, CupertinoColors.white)),
             ),
           ),
         ]),
@@ -976,7 +977,7 @@ class _AutoManual extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget seg(String label, bool active, bool value) => Tap(
-          label: value ? 'Captura automática' : 'Captura manual',
+          label: value ? t('Captura automática') : t('Captura manual'),
           onTap: () => onChanged(value),
           child: Container(
             width: 70,
@@ -996,8 +997,8 @@ class _AutoManual extends StatelessWidget {
         width: 150,
         height: 44,
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          seg('Auto', auto, true),
-          seg('Manual', !auto, false),
+          seg(t('Auto'), auto, true),
+          seg(t('Manual'), !auto, false),
         ]),
       ),
     );
@@ -1064,26 +1065,26 @@ class _CameraProblem extends StatelessWidget {
             child: const Icon(CupertinoIcons.camera_fill, size: 28, color: CupertinoColors.white),
           ),
           const SizedBox(height: 20),
-          Text(denied ? 'Necesitamos la cámara' : 'No se puede usar la cámara',
+          Text(denied ? t('Necesitamos la cámara') : t('No se puede usar la cámara'),
               textAlign: TextAlign.center, style: ts(20, w700, CupertinoColors.white)),
           const SizedBox(height: 8),
           Text(message,
               textAlign: TextAlign.center, style: ts(15, w400, const Color(0xCCFFFFFF), 1.35)),
           const SizedBox(height: 24),
           PrimaryButton(
-              label: denied ? 'Abrir ajustes' : 'Reintentar', onTap: denied ? onSettings : onRetry),
+              label: denied ? t('Abrir ajustes') : t('Reintentar'), onTap: denied ? onSettings : onRetry),
           const SizedBox(height: 10),
           if (denied)
             Tap(
               minSize: 48,
               onTap: onRetry,
-              child: Text('Ya la activé · Reintentar',
+              child: Text(t('Ya la activé · Reintentar'),
                   style: ts(15, w600, AppColors.accentLight)),
             ),
           Tap(
             minSize: 48,
             onTap: onImport,
-            child: Text('Importar de la galería', style: ts(15, w600, AppColors.accentLight)),
+            child: Text(t('Importar de la galería'), style: ts(15, w600, AppColors.accentLight)),
           ),
         ]),
       ),
@@ -1126,8 +1127,8 @@ class _ModeSwitch extends StatelessWidget {
         decoration: BoxDecoration(
             color: const Color(0x99000000), borderRadius: BorderRadius.circular(20)),
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          item('Individual', CaptureMode.single),
-          item('Lote', CaptureMode.multi),
+          item(t('Individual'), CaptureMode.single),
+          item(t('Lote'), CaptureMode.multi),
         ]),
       ),
     );
@@ -1148,11 +1149,11 @@ class _NextButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 18),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: enabled ? AppColors.accentDark : const Color(0x1FFFFFFF),
+          color: enabled ? AppColors.accentFill : const Color(0x1FFFFFFF),
           borderRadius: BorderRadius.circular(8),
         ),
         // The original says "Hecho" (done) here.
-        child: Text('Hecho',
+        child: Text(t('Hecho'),
             style: ts(15, w600, enabled ? CupertinoColors.white : const Color(0x59FFFFFF))),
       ),
     );

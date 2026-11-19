@@ -5,6 +5,7 @@ import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:image/image.dart' as img;
+import 'l10n.dart';
 
 part 'scan_engine.dart';
 
@@ -13,11 +14,11 @@ enum PageFilter { original, enhance, lighten, gray, bw }
 
 extension PageFilterLabel on PageFilter {
   String get label => switch (this) {
-        PageFilter.original => 'Original',
-        PageFilter.enhance => 'Mejorar',
-        PageFilter.lighten => 'Aclarar',
-        PageFilter.gray => 'Grises',
-        PageFilter.bw => 'B/N',
+        PageFilter.original => t('Original'),
+        PageFilter.enhance => t('Mejorar'),
+        PageFilter.lighten => t('Aclarar'),
+        PageFilter.gray => t('Grises'),
+        PageFilter.bw => t('B/N'),
       };
 }
 
@@ -374,6 +375,6 @@ Uint8List? runPageJob(PageJob job) {
 /// Small preview of a filter on an already flattened page.
 Uint8List previewFilter((Uint8List, PageFilter) args) {
   final decoded = img.decodeImage(args.$1)!;
-  final small = img.copyResize(decoded, width: math.min(decoded.width, 900));
-  return encodeJpeg(applyFilter(RgbImage.fromImage(small), args.$2), quality: 80);
+  final small = img.copyResize(decoded, width: math.min(decoded.width, 1800));
+  return encodeJpeg(applyFilter(RgbImage.fromImage(small), args.$2), quality: 88);
 }

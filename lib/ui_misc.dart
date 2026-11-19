@@ -11,9 +11,10 @@ import 'scan_flow.dart';
 import 'store.dart';
 import 'theme.dart';
 import 'widgets/widgets.dart';
+import 'l10n.dart';
 
 /// "tu iPhone" / "tu teléfono".
-String get deviceWord => Platform.isIOS ? 'iPhone' : 'teléfono';
+String get deviceWord => Platform.isIOS ? 'iPhone' : t('teléfono');
 
 // ───────────────────────── Dialogs (14, 15) ─────────────────────────
 
@@ -57,11 +58,11 @@ class _NameDialogState extends State<_NameDialog> {
   @override
   Widget build(BuildContext context) {
     return CupertinoAlertDialog(
-      title: Text('Cambiar nombre', style: ts(17, w600)),
+      title: Text(t('Cambiar nombre'), style: ts(17, w600)),
       content: Padding(
         padding: const EdgeInsets.only(top: 6),
         child: Column(children: [
-          Text('Escribe un nombre para este documento.',
+          Text(t('Escribe un nombre para este documento.'),
               style: ts(13, w400, AppColors.alertBody), textAlign: TextAlign.center),
           const SizedBox(height: 14),
           CupertinoTextField(
@@ -71,7 +72,7 @@ class _NameDialogState extends State<_NameDialog> {
             style: ts(15, w400),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             decoration: BoxDecoration(
-              color: CupertinoColors.white,
+              color: AppColors.surface,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: AppColors.separator),
             ),
@@ -80,11 +81,11 @@ class _NameDialogState extends State<_NameDialog> {
         ]),
       ),
       actions: [
-        _dialogButton('Cancelar', () => Navigator.pop(context)),
+        _dialogButton(t('Cancelar'), () => Navigator.pop(context)),
         ValueListenableBuilder<TextEditingValue>(
           valueListenable: controller,
           builder: (_, v, _) => _dialogButton(
-              'Guardar',
+              t('Guardar'),
               v.text.trim().isEmpty ? null : () => Navigator.pop(context, v.text.trim()),
               bold: true),
         ),
@@ -95,7 +96,7 @@ class _NameDialogState extends State<_NameDialog> {
 
 /// Destructive confirmation (screen 15).
 Future<bool> confirm(BuildContext context, String title, String body,
-    {String action = 'Eliminar'}) async {
+    {String? action}) async {
   final ok = await showCupertinoDialog<bool>(
     context: context,
     builder: (context) => CupertinoAlertDialog(
@@ -105,7 +106,7 @@ Future<bool> confirm(BuildContext context, String title, String body,
           height: 48,
           margin: const EdgeInsets.only(bottom: 12),
           decoration:
-              const BoxDecoration(color: AppColors.destructiveTint, shape: BoxShape.circle),
+              BoxDecoration(color: AppColors.destructiveTint, shape: BoxShape.circle),
           child: const Icon(CupertinoIcons.trash, size: 22, color: AppColors.destructive),
         ),
         Text(title, style: ts(17, w600), textAlign: TextAlign.center),
@@ -115,8 +116,8 @@ Future<bool> confirm(BuildContext context, String title, String body,
         child: Text(body, style: ts(13, w400, AppColors.alertBody), textAlign: TextAlign.center),
       ),
       actions: [
-        _dialogButton('Cancelar', () => Navigator.pop(context, false)),
-        _dialogButton(action, () => Navigator.pop(context, true), destructive: true),
+        _dialogButton(t('Cancelar'), () => Navigator.pop(context, false)),
+        _dialogButton(action ?? t('Eliminar'), () => Navigator.pop(context, true), destructive: true),
       ],
     ),
   );
@@ -152,8 +153,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
     } catch (_) {}
     final n = widget.store.docs.length;
     final mb = bytes / (1024 * 1024);
-    final size = mb < 0.1 ? 'menos de 1 MB' : '${mb.toStringAsFixed(1).replaceAll('.', ',')} MB';
-    if (mounted) setState(() => storage = '$n ${n == 1 ? 'documento' : 'documentos'} · $size');
+    final size = mb < 0.1 ? t('menos de 1 MB') : '${mb.toStringAsFixed(1).replaceAll('.', decimalSep)} MB';
+    if (mounted) setState(() => storage = '$n ${plural(n, 'documento', 'documentos')} · $size');
   }
 
   Future<void> _save() async {
@@ -165,7 +166,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final picked = await showCupertinoModalPopup<PageFilter>(
       context: context,
       builder: (ctx) => CupertinoActionSheet(
-        title: const Text('Filtro por defecto'),
+        title: Text(t('Filtro por defecto')),
         actions: [
           for (final f in PageFilter.values)
             CupertinoActionSheetAction(
@@ -181,7 +182,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
         ],
         cancelButton: CupertinoActionSheetAction(
-            onPressed: () => Navigator.pop(ctx), child: const Text('Cancelar')),
+            onPressed: () => Navigator.pop(ctx), child: Text(t('Cancelar'))),
       ),
     );
     if (picked != null) {
@@ -240,50 +241,50 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final seg = <PdfPageSize, Widget>{
       PdfPageSize.a4: Text('A4', style: ts(14, w600)),
-      PdfPageSize.letter: Text('Carta', style: ts(14, w400)),
-      PdfPageSize.fit: Text('Ajustar', style: ts(14, w400)),
+      PdfPageSize.letter: Text(t('Carta'), style: ts(14, w400)),
+      PdfPageSize.fit: Text(t('Ajustar'), style: ts(14, w400)),
     };
     return CupertinoPageScaffold(
       backgroundColor: AppColors.background,
       child: ListView(padding: EdgeInsets.zero, children: [
         LargeHeader(
-          title: 'Ajustes',
+          title: t('Ajustes'),
           trailing: [
             GlassIconButton(
-                label: 'Cerrar', icon: CupertinoIcons.xmark, onTap: () => Navigator.pop(context)),
+                label: t('Cerrar'), icon: CupertinoIcons.xmark, onTap: () => Navigator.pop(context)),
           ],
         ),
-        const SectionHeader('Escaneo'),
+        SectionHeader(t('Escaneo')),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: GroupedCard(separatorInset: 16, children: [
-            _row('Detectar bordes automáticamente', _switch(s.autoCrop, (v) {
+            _row(t('Detectar bordes automáticamente'), _switch(s.autoCrop, (v) {
               s.autoCrop = v;
               _save();
-            }), sub: 'Recorta la hoja sola; luego puedes ajustarla.'),
-            _row('Captura automática', _switch(s.autoCapture, (v) {
+            }), sub: t('Recorta la hoja sola; luego puedes ajustarla.')),
+            _row(t('Captura automática'), _switch(s.autoCapture, (v) {
               s.autoCapture = v;
               _save();
-            }), sub: 'Hace la foto cuando la hoja está quieta.'),
+            }), sub: t('Hace la foto cuando la hoja está quieta.')),
             _row(
-              'Filtro por defecto',
+              t('Filtro por defecto'),
               Row(children: [
                 Text(s.defaultFilter.label, style: ts(16, w400, AppColors.muted)),
                 const SizedBox(width: 4),
-                const Icon(CupertinoIcons.chevron_right, size: 14, color: AppColors.tertiary),
+                Icon(CupertinoIcons.chevron_right, size: 14, color: AppColors.tertiary),
               ]),
               onTap: _pickFilter,
             ),
           ]),
         ),
-        const SectionHeader('PDF e imágenes'),
+        SectionHeader(t('PDF e imágenes')),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: GroupedCard(separatorInset: 16, children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('Tamaño de página', style: ts(16, w400)),
+                Text(t('Tamaño de página'), style: ts(16, w400)),
                 const SizedBox(height: 10),
                 SizedBox(
                   width: double.infinity,
@@ -303,7 +304,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               padding: const EdgeInsets.fromLTRB(16, 14, 16, 10),
               child: Column(children: [
                 Row(children: [
-                  Expanded(child: Text('Calidad', style: ts(16, w400))),
+                  Expanded(child: Text(t('Calidad'), style: ts(16, w400))),
                   Text('${s.jpegQuality} %', style: ts(16, w600, AppColors.accentDark)),
                 ]),
                 const SizedBox(height: 6),
@@ -326,33 +327,33 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ]),
         ),
-        const SectionHeader('Privacidad'),
+        SectionHeader(t('Privacidad')),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: GroupedCard(separatorInset: 60, children: [
             _iconRow(_badge(CupertinoIcons.lock_fill, AppColors.accent, CupertinoColors.white),
-                'Todo se guarda en este dispositivo'),
+                t('Todo se guarda en este dispositivo')),
             // Plain language; the technical path is only a long-press away.
             Tap(
               onLongPress: () {
                 Clipboard.setData(ClipboardData(text: widget.store.root.path));
-                showToast(context, 'Ruta copiada');
+                showToast(context, t('Ruta copiada'));
               },
               child: _iconRow(
                   _badge(CupertinoIcons.folder, AppColors.accentTint, AppColors.accentDark),
-                  'Privado en esta app',
-                  sub: storage ?? 'Calculando…'),
+                  t('Privado en esta app'),
+                  sub: storage ?? t('Calculando…')),
             ),
           ]),
         ),
         const SizedBox(height: 28),
         Center(
-            child: Text('Escáner Local 1.0\nSin anuncios · Sin cuentas · Sin nube',
+            child: Text(t('Escáner Local 1.0\nSin anuncios · Sin cuentas · Sin nube'),
                 textAlign: TextAlign.center, style: ts(12, w400, AppColors.tertiary, 1.5))),
         // Close within thumb reach (the X at the top is hard to hit one-handed).
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
-          child: SecondaryButton(label: 'Cerrar', onTap: () => Navigator.pop(context)),
+          child: SecondaryButton(label: t('Cerrar'), onTap: () => Navigator.pop(context)),
         ),
         SizedBox(height: MediaQuery.paddingOf(context).bottom + 30),
       ]),
@@ -376,14 +377,14 @@ class _OcrScreenState extends State<OcrScreen> {
 
   Future<void> _recognise() async {
     if (!isMobile) {
-      showToast(context, 'El reconocimiento de texto funciona en Android y iPhone.');
+      showToast(context, t('El reconocimiento de texto funciona en Android y iPhone.'));
       return;
     }
     setState(() => busy = true);
     final doc = widget.doc;
     final recognizer = TextRecognizer(script: TextRecognitionScript.latin);
     try {
-      await withProgress(context, 'Reconociendo texto…', () async {
+      await withProgress(context, t('Reconociendo texto…'), () async {
         final parts = <String>[];
         for (var i = 0; i < doc.pages.length; i++) {
           final result = await recognizer
@@ -417,18 +418,18 @@ class _OcrScreenState extends State<OcrScreen> {
               BackLink(label: shortName, onTap: () => Navigator.pop(context)),
               const Spacer(),
               GlassIconButton(
-                label: 'Copiar texto',
+                label: t('Copiar texto'),
                 icon: CupertinoIcons.doc_on_doc,
                 onTap: empty
                     ? null
                     : () {
                         Clipboard.setData(ClipboardData(text: controller.text));
-                        showToast(context, 'Copiado');
+                        showToast(context, t('Copiado'));
                       },
               ),
               const SizedBox(width: 8),
               GlassIconButton(
-                label: 'Compartir texto',
+                label: t('Compartir texto'),
                 icon: CupertinoIcons.share,
                 onTap: empty
                     ? null
@@ -440,7 +441,7 @@ class _OcrScreenState extends State<OcrScreen> {
         Align(
             alignment: Alignment.centerLeft,
             child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 8, 20, 12), child: Text('Texto', style: ts(34, w700)))),
+                padding: const EdgeInsets.fromLTRB(20, 8, 20, 12), child: Text(t('Texto'), style: ts(34, w700)))),
         Expanded(
           child: empty && !busy ? _empty() : _editor(),
         ),
@@ -452,12 +453,12 @@ class _OcrScreenState extends State<OcrScreen> {
         child: Padding(
           padding: const EdgeInsets.all(32),
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Icon(CupertinoIcons.text_cursor, size: 56, color: AppColors.tertiary),
+            Icon(CupertinoIcons.text_cursor, size: 56, color: AppColors.tertiary),
             const SizedBox(height: 14),
-            Text('Aún no se ha reconocido el texto', style: ts(17, w600)),
+            Text(t('Aún no se ha reconocido el texto'), style: ts(17, w600)),
             const SizedBox(height: 18),
             PrimaryButton(
-                label: 'Reconocer texto',
+                label: t('Reconocer texto'),
                 height: 50,
                 icon: CupertinoIcons.wand_stars,
                 expand: false,
@@ -473,7 +474,7 @@ class _OcrScreenState extends State<OcrScreen> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: PrimaryButton(
-              label: 'Volver a reconocer',
+              label: t('Volver a reconocer'),
               height: 50,
               icon: CupertinoIcons.wand_stars,
               onTap: busy ? null : _recognise),
@@ -520,8 +521,8 @@ class _OfflineNote extends StatelessWidget {
   const _OfflineNote();
   @override
   Widget build(BuildContext context) => Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        const Icon(CupertinoIcons.lock_fill, size: 11, color: AppColors.muted),
+        Icon(CupertinoIcons.lock_fill, size: 11, color: AppColors.muted),
         const SizedBox(width: 6),
-        Text('Se hace en el propio dispositivo, sin internet.', style: ts(13, w400, AppColors.muted)),
+        Text(t('Se hace en el propio dispositivo, sin internet.'), style: ts(13, w400, AppColors.muted)),
       ]);
 }

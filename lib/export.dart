@@ -12,6 +12,7 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:share_plus/share_plus.dart';
 
 import 'store.dart';
+import 'l10n.dart';
 
 bool get isMobile => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
@@ -84,7 +85,7 @@ Future<String?> exportImages(ScanDoc doc, {required bool share}) async {
     await SharePlus.instance.share(ShareParams(files: files, subject: doc.name));
     return null;
   }
-  final folder = await getDirectoryPath(confirmButtonText: 'Guardar aquí');
+  final folder = await getDirectoryPath(confirmButtonText: t('Guardar aquí'));
   if (folder == null) return null;
   for (var i = 0; i < files.length; i++) {
     final target = File('$folder${Platform.pathSeparator}${safeFileName(doc.name)}_${i + 1}.jpg');
@@ -100,7 +101,7 @@ Future<String?> exportText(String text, String name, {required bool share}) asyn
     await SharePlus.instance.share(ShareParams(text: text, subject: name));
     return null;
   }
-  return _saveBytes(bytes, fileName, 'Texto', ['txt']);
+  return _saveBytes(bytes, fileName, t('Texto'), ['txt']);
 }
 
 Future<String?> _saveBytes(Uint8List bytes, String name, String label, List<String> ext) async {

@@ -5,6 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 
 import '../theme.dart';
+import '../l10n.dart';
 
 BoxShadow _shadow(Color c, double opacity, double y, double blur) =>
     BoxShadow(color: c.withValues(alpha: opacity), offset: Offset(0, y), blurRadius: blur);
@@ -140,9 +141,9 @@ class GlassIconButton extends StatelessWidget {
         inner = Glass(
           radius: size / 2,
           blur: 12,
-          color: const Color(0xCCFFFFFF),
-          border: const Color(0xFFFFFFFF),
-          shadows: [_shadow(AppColors.text, 0.08, 4, 12)],
+          color: AppColors.glass,
+          border: AppColors.glassEdge,
+          shadows: [_shadow(AppColors.shadow, 0.08, 4, 12)],
           child: _icon(color ?? AppColors.text),
         );
       case GlassStyle.dark:
@@ -204,9 +205,9 @@ class PrimaryButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
           decoration: BoxDecoration(
             // accentDark, not accent: white text on #00B4D8 is only 2.5:1.
-            color: AppColors.accentDark,
+            color: AppColors.accentFill,
             borderRadius: BorderRadius.circular(height / 2),
-            boxShadow: [_shadow(AppColors.accentDark, 0.35, 6, 16)],
+            boxShadow: [_shadow(AppColors.accentFill, 0.35, 6, 16)],
           ),
           child: Row(
             mainAxisSize: expand ? MainAxisSize.max : MainAxisSize.min,
@@ -255,7 +256,7 @@ class ScanFab extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Tap(
         onTap: onTap,
-        label: 'Escanear con la cámara',
+        label: t('Escanear con la cámara'),
         child: Container(
           width: 72,
           height: 72,
@@ -285,9 +286,9 @@ class GlassFab extends StatelessWidget {
           child: Glass(
             radius: 26,
             blur: 12,
-            color: const Color(0xB3FFFFFF),
-            border: const Color(0xFFFFFFFF),
-            shadows: [_shadow(AppColors.text, 0.12, 6, 16)],
+            color: AppColors.glass,
+            border: AppColors.glassEdge,
+            shadows: [_shadow(AppColors.shadow, 0.12, 6, 16)],
             child: Center(child: Icon(icon, size: 17, color: AppColors.text)),
           ),
         ),
@@ -304,7 +305,7 @@ class PrivacyPill extends StatelessWidget {
         decoration:
             BoxDecoration(color: AppColors.accentTint, borderRadius: BorderRadius.circular(18)),
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const Icon(CupertinoIcons.lock_fill, size: 12, color: AppColors.accentDark),
+          Icon(CupertinoIcons.lock_fill, size: 12, color: AppColors.accentDark),
           const SizedBox(width: 6),
           Flexible(
               child: Text(text,
@@ -333,7 +334,7 @@ class GroupedCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [_shadow(AppColors.text, 0.05, 2, 8)],
+        boxShadow: [_shadow(AppColors.shadow, 0.05, 2, 8)],
       ),
       clipBehavior: Clip.antiAlias,
       child: Column(children: rows),
@@ -350,7 +351,7 @@ class TextChip extends StatelessWidget {
         alignment: Alignment.center,
         decoration:
             BoxDecoration(color: AppColors.accentTint, borderRadius: BorderRadius.circular(6)),
-        child: Text('Texto', style: ts(12, w600, AppColors.text)),
+        child: Text(t('Texto'), style: ts(12, w600, AppColors.text)),
       );
 }
 
@@ -372,9 +373,9 @@ class FloatingActionBar extends StatelessWidget {
     return Glass(
       radius: 33,
       blur: 20,
-      color: dark ? const Color(0xE61E2227) : const Color(0xD9FFFFFF),
-      border: dark ? const Color(0x1AFFFFFF) : const Color(0xFFFFFFFF),
-      shadows: [_shadow(AppColors.text, 0.12, 8, 24)],
+      color: dark ? const Color(0xE61E2227) : AppColors.glass,
+      border: dark ? const Color(0x1AFFFFFF) : AppColors.glassEdge,
+      shadows: [_shadow(AppColors.shadow, 0.12, 8, 24)],
       child: SizedBox(
         height: 66,
         child: Row(children: [
@@ -457,7 +458,7 @@ class BackLink extends StatelessWidget {
         onTap: onTap,
         minSize: 44,
         child: Row(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(CupertinoIcons.chevron_left, size: 20, color: AppColors.accentDark),
+          Icon(CupertinoIcons.chevron_left, size: 20, color: AppColors.accentDark),
           const SizedBox(width: 2),
           ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 160),
@@ -481,7 +482,8 @@ class HudCard extends StatelessWidget {
   Widget build(BuildContext context) => Glass(
         radius: 28,
         blur: 30,
-        color: const Color(0xEBFFFFFF),
+        color: AppColors.dark ? const Color(0xF21E2227) : const Color(0xEBFFFFFF),
+        border: AppColors.dark ? const Color(0x1AFFFFFF) : null,
         shadows: [_shadow(const Color(0xFF000000), 0.18, 16, 40)],
         child: SizedBox(
           width: 190,
@@ -594,12 +596,12 @@ void showToast(BuildContext context, String text) {
 
 /// Section header above a grouped card (UPPERCASE, accent).
 class SectionHeader extends StatelessWidget {
-  const SectionHeader(this.text, {super.key, this.color = AppColors.accentDark});
+  const SectionHeader(this.text, {super.key, this.color});
   final String text;
-  final Color color;
+  final Color? color;
   @override
   Widget build(BuildContext context) => Padding(
         padding: const EdgeInsets.fromLTRB(36, 22, 20, 8),
-        child: Text(text.toUpperCase(), style: ts(12, w600, color)),
+        child: Text(text.toUpperCase(), style: ts(12, w600, color ?? AppColors.accentDark)),
       );
 }
